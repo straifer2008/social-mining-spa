@@ -10,7 +10,7 @@
             alt="logo"
             class="logo-link--image"
           />
-          <span class="logo-link--title">GrandTime</span>
+          <span class="logo-link--title">GRAND TIME</span>
         </router-link>
       </div>
     </div>
@@ -513,10 +513,10 @@ export default {
   gap: 15px;
 
   &--title {
-    font-size: 24px;
-    color: #ffffff80;
-    font-weight: 300;
-    line-height: 1;
+    color: #fff;
+    font-size: 20px;
+    line-height: 31px;
+    font-weight: 700;
   }
 }
 </style>

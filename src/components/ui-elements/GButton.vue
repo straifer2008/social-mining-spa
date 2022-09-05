@@ -1,14 +1,10 @@
 <template>
   <component
-    class="g-button btn btn-block"
+    class="g-button"
     :is="tag"
     :type="type"
     :disabled="disabled || loading"
-    :class="[
-      colorClass[btnStyle][color],
-      sizeClass[size],
-      { 'btn-pill': rounded, 'btn-square': flat }
-    ]"
+
   >
     <div v-if="loading" class="g-button__content--loading"></div>
     <slot></slot>

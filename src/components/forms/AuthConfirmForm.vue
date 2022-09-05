@@ -1,29 +1,14 @@
 <template>
   <AuthFormCard class="auth-confirm-form">
-    <div class="text-center">
+    <div>
+      <img class="icon" src="/img/icons/grand-icon.png" />
       <h5 class="auth-form--title">{{ $t('authConfirmForm.title') }}</h5>
       <p class="auth-confirm-form--description">
-        {{ $t('authConfirmForm.description') }}
+        {{ $t('authConfirmForm.description1') }}<br>{{ $t('authConfirmForm.description2') }} {{ email }}.
       </p>
-
-      <p v-if="repeatTimeout > 0">
-        {{ $t('authConfirmForm.repeatTimeoutInfo', { second: repeatTimeout }) }}
-      </p>
-      <G-Button
-        v-else
-        size="sm"
-        color="secondary"
-        outline
-        rounded
-        :loading="repeatLading"
-        class="w-50 mx-auto"
-        @click="repeatAuthEmailCode"
-      >
-        {{ $t('authConfirmForm.repeatBtn') }}
-      </G-Button>
     </div>
     <form class="theme-form" :key="formKey">
-      <div class="form-group">
+      <div class="form-group input-code">
         <G-Input
           v-model="form.code"
           ref="code"
@@ -31,18 +16,22 @@
           :placeholder="$t('authConfirmForm.placeholderCode')"
         />
       </div>
-      <div class="form-group mt-3 mb-0">
+      <div class="form-group">
         <G-Button type="submit" @click.prevent="onSubmit" :loading="loading">
           {{ $t('authConfirmForm.submit') }}
         </G-Button>
       </div>
-      <div class="text-center mt-3" v-tooltip.bottom="'Lorem text'">
-        {{ $t('authConfirmForm.notReceive') }}
+
+      <div
+        class="w-50 mx-auto text-center repeat"
+        @click="repeatAuthEmailCode"
+      >
+        {{ $t('authConfirmForm.repeatBtn') }}
       </div>
 
       <router-link
-        to="/auth/login"
-        class="btn-link btn-forgot d-block ml-auto w-fit mt-3"
+              to="/auth/login"
+              class="btn-link btn-forgot d-block ml-auto w-fit mt-3"
       >
         {{ $t('authConfirmForm.btnBack') }}
       </router-link>
@@ -62,11 +51,9 @@ export default {
   data() {
     return {
       token: '',
-      repeatIntervalFunc: null,
-      repeatTimeout: 0,
+      email: '',
       formKey: 0,
       loading: false,
-      repeatLading: false,
       form: {
         code: '',
         deviceHash: 'deviceHashdeviceHash deviceHashdeviceHash deviceHash'
@@ -91,7 +78,7 @@ export default {
           })
           this.resetForm()
           localStorage.setItem('grand_auth_token', `${data.type} ${data.token}`)
-          this.$router.push({ name: 'Dashboard' })
+          this.$router.push({ name: 'MyTasks' })
         } catch (err) {
           console.log(err)
         } finally {
@@ -107,31 +94,18 @@ export default {
       const { data } = await this.$api.auth.getAuthEmailCode(this.token)
       if (!data) {
         this.$router.push('/auth/login')
-        return
       }
-      this.repeatIntervalStart(+data.repeat_timeout)
     },
     async repeatAuthEmailCode() {
       this.repeatLading = true
       const data = await this.$api.auth.repeatAuthEmailCode(this.token)
-      this.repeatIntervalStart(+data.timeout)
       this.repeatLading = false
     },
-    repeatTick() {
-      this.repeatTimeout -= 1
-      if (+this.repeatTimeout <= 0) {
-        clearInterval(this.repeatIntervalFunc)
-      }
-    },
-    repeatIntervalStart(timeout) {
-      if (Number.isInteger(timeout)) {
-        this.repeatTimeout = timeout
-      }
-      this.repeatIntervalFunc = setInterval(this.repeatTick, 1000)
-    }
+
   },
   created() {
     this.token = this.$route.params.token
+    this.email = this.$route.params.email
 
     this.getAuthEmailCode()
   },
@@ -144,7 +118,31 @@ export default {
 <style lang="scss">
 .auth-confirm-form {
   &--description {
-    color: grey;
+    font-size: 20px;
+    line-height: 35px;
+  }
+
+  .icon {
+    margin-bottom: 30px;
+  }
+
+  p {
+    margin-bottom: 40px;
+  }
+
+  .input-code {
+    margin-bottom: 60px;
   }
 }
+
+  .repeat {
+    font-size: 17px;
+    line-height: 30px;
+    color: #3279FD;
+    cursor: pointer;
+  }
+
+  h5 {
+    text-align: left;
+  }
 </style>
