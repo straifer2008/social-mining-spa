@@ -88,6 +88,9 @@ export default {
 
 <style lang="scss">
 .g-recaptcha {
+  display: flex;
+  justify-content: center;
+
   &.g-error {
     box-shadow: 0px 0px 8px 1px var(--danger),
       inset 0px 0px 8px 0px var(--danger);
