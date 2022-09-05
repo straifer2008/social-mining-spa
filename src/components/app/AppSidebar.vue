@@ -1,0 +1,522 @@
+<template>
+  <div>
+    <div class="main-header-left d-none d-lg-block">
+      <div class="logo-wrapper">
+        <router-link to="/" class="logo-link">
+          <img
+            width="42"
+            height="42"
+            src="/img/icons/grand-icon.svg"
+            alt="logo"
+            class="logo-link--image"
+          />
+          <span class="logo-link--title">GrandTime</span>
+        </router-link>
+      </div>
+    </div>
+    <div class="sidebar custom-scrollbar">
+      <!-- <div class="sidebar-user text-center">
+        <div>
+          <img
+            class="img-60 rounded-circle"
+            src="@/assets/images/user/1.jpg"
+            alt="#"
+          />
+          <div class="profile-edit">
+            <router-link to="/users/edit">
+              <vue-feather type="edit"></vue-feather>
+            </router-link>
+          </div>
+        </div>
+        <h6 class="mt-3 f-14">ELANA</h6>
+        <p>general manager.</p>
+      </div> -->
+      <ul
+        class="sidebar-menu"
+        id="myDIV"
+        :style="[
+          layout.settings.sidebar.type == 'horizontal_sidebar'
+            ? layout.settings.layout_type == 'rtl'
+              ? { 'margin-right': margin + 'px' }
+              : { 'margin-left': margin + 'px' }
+            : { margin: '0px' }
+        ]"
+      >
+        <li
+          class="left-arrow"
+          :class="{
+            'd-none':
+              layout.settings.layout_type == 'rtl'
+                ? hideLeftArrowRTL
+                : hideLeftArrow
+          }"
+          @click="
+            layout.settings.sidebar.type === 'horizontal_sidebar' &&
+            layout.settings.layout_type === 'rtl'
+              ? scrollToLeftRTL()
+              : scrollToLeft()
+          "
+        >
+          <i class="fa fa-angle-left"></i>
+        </li>
+        <li
+          v-for="(menuItem, index) in menuItems"
+          :key="index"
+          class="sidebar-menu__item"
+          :class="{ active: menuItem.active, hidden: menuItem.hidden }"
+        >
+          <!-- Sub -->
+          <a
+            href="javascript:void(0)"
+            class="sidebar-header"
+            v-if="menuItem.type == 'sub'"
+            @click="setNavActive(menuItem, index)"
+          >
+            <vue-feather :type="menuItem.icon" class="top"></vue-feather>
+            <span>
+              {{ $t(menuItem.title) }}
+              <span
+                :class="'badge badge-pill badge-' + menuItem.badgeType"
+                v-if="menuItem.badgeType"
+                >{{ menuItem.badgeValue }}</span
+              >
+            </span>
+            <i
+              class="fa fa-angle-right pull-right"
+              v-if="menuItem.children"
+            ></i>
+          </a>
+          <!-- Link -->
+          <router-link
+            :to="menuItem.path"
+            class="sidebar-header"
+            v-if="menuItem.type == 'link'"
+          >
+            <vue-feather :type="menuItem.icon" class="top"></vue-feather>
+            <span>
+              {{ $t(menuItem.title) }}
+              <span
+                :class="'badge badge-' + menuItem.badgeType + ' ml-3'"
+                v-if="menuItem.badgeType"
+                >{{ menuItem.badgeValue }}</span
+              >
+            </span>
+            <i
+              class="fa fa-angle-right pull-right"
+              v-if="menuItem.children"
+            ></i>
+          </router-link>
+          <!-- External Link -->
+          <a
+            :href="menuItem.path"
+            class="sidebar-header"
+            v-if="menuItem.type == 'extLink'"
+            @click="setNavActive(menuItem, index)"
+          >
+            <vue-feather :type="menuItem.icon" class="top"></vue-feather>
+            <span>
+              {{ $t(menuItem.title) }}
+              <span
+                :class="'badge badge-' + menuItem.badgeType + ' ml-3'"
+                v-if="menuItem.badgeType"
+                >{{ menuItem.badgeValue }}</span
+              >
+            </span>
+            <i
+              class="fa fa-angle-right pull-right"
+              v-if="menuItem.children"
+            ></i>
+          </a>
+          <!-- External Tab Link -->
+          <a
+            :href="menuItem.path"
+            target="_blank"
+            class="sidebar-header"
+            v-if="menuItem.type == 'extTabLink'"
+            @click="setNavActive(menuItem, index)"
+          >
+            <vue-feather :type="menuItem.icon" class="top"></vue-feather>
+            <span>
+              {{ $t(menuItem.title) }}
+              <span
+                :class="'badge badge-' + menuItem.badgeType + ' ml-3'"
+                v-if="menuItem.badgeType"
+                >{{ menuItem.badgeValue }}</span
+              >
+            </span>
+            <i
+              class="fa fa-angle-right pull-right"
+              v-if="menuItem.children"
+            ></i>
+          </a>
+          <!-- 2nd Level Menu -->
+          <ul class="sidebar-submenu" v-if="menuItem.children">
+            <li
+              v-for="(childrenItem, index) in menuItem.children"
+              :key="index"
+              :class="{ active: childrenItem.active }"
+            >
+              <!-- Sub -->
+              <a
+                href="javascript:void(0)"
+                v-if="childrenItem.type == 'sub'"
+                @click="setNavActive(childrenItem, index)"
+              >
+                <i class="fa fa-circle"></i>
+                {{ $t(childrenItem.title) }}
+                <span
+                  :class="
+                    'badge badge-' + childrenItem.badgeType + ' pull-right'
+                  "
+                  v-if="childrenItem.badgeType"
+                  >{{ childrenItem.badgeValue }}</span
+                >
+                <i
+                  class="fa fa-angle-right pull-right"
+                  v-if="childrenItem.children"
+                ></i>
+              </a>
+              <!-- Link -->
+              <router-link
+                :to="childrenItem.path"
+                v-if="childrenItem.type == 'link'"
+              >
+                <i class="fa fa-circle"></i>
+                {{ $t(childrenItem.title) }}
+                <span
+                  :class="
+                    'badge badge-' + childrenItem.badgeType + ' pull-right'
+                  "
+                  v-if="childrenItem.badgeType"
+                  >{{ childrenItem.badgeValue }}</span
+                >
+                <i
+                  class="fa fa-angle-right pull-right"
+                  v-if="childrenItem.children"
+                ></i>
+              </router-link>
+              <!-- External Link -->
+              <a
+                :href="childrenItem.path"
+                v-if="childrenItem.type == 'extLink'"
+              >
+                <i class="fa fa-circle"></i>
+                {{ $t(childrenItem.title) }}
+                <span
+                  :class="
+                    'badge badge-' + childrenItem.badgeType + ' pull-right'
+                  "
+                  v-if="childrenItem.badgeType"
+                  >{{ childrenItem.badgeValue }}</span
+                >
+                <i
+                  class="fa fa-angle-right pull-right"
+                  v-if="childrenItem.children"
+                ></i>
+              </a>
+              <!-- External Tab Link -->
+              <a
+                :href="childrenItem.path"
+                target="_blank"
+                v-if="childrenItem.type == 'extTabLink'"
+              >
+                <i class="fa fa-circle"></i>
+                <span>
+                  {{ $t(childrenItem.title) }}
+                  <i
+                    class="pi pi-link text-info"
+                    style="vertical-align: bottom"
+                  ></i>
+                </span>
+                <span
+                  :class="
+                    'badge badge-' + childrenItem.badgeType + ' pull-right'
+                  "
+                  v-if="childrenItem.badgeType"
+                  >{{ childrenItem.badgeValue }}</span
+                >
+                <i
+                  class="fa fa-angle-right pull-right"
+                  v-if="childrenItem.children"
+                ></i>
+              </a>
+              <!-- 3rd Level Menu -->
+              <ul
+                class="sidebar-submenu horizontal-child-sub"
+                v-if="childrenItem.children"
+              >
+                <li
+                  v-for="(childrenSubItem, index) in childrenItem.children"
+                  :key="index"
+                >
+                  <!-- Link -->
+                  <router-link
+                    :to="childrenSubItem.path"
+                    v-if="childrenSubItem.type == 'link'"
+                  >
+                    <i class="fa fa-circle"></i>
+                    {{ $t(childrenSubItem.title) }}
+                    <span
+                      :class="
+                        'badge badge-' +
+                        childrenSubItem.badgeType +
+                        ' pull-right'
+                      "
+                      v-if="childrenSubItem.badgeType"
+                      >{{ childrenSubItem.badgeValue }}</span
+                    >
+                    <i
+                      class="fa fa-angle-right pull-right"
+                      v-if="childrenSubItem.children"
+                    ></i>
+                  </router-link>
+                  <!-- External Link -->
+                  <a
+                    :href="childrenSubItem.path"
+                    v-if="childrenSubItem.type == 'extLink'"
+                  >
+                    <i class="fa fa-circle"></i>
+                    {{ $t(childrenSubItem.title) }}
+                    <span
+                      :class="
+                        'badge badge-' +
+                        childrenSubItem.badgeType +
+                        ' pull-right'
+                      "
+                      v-if="childrenSubItem.badgeType"
+                      >{{ childrenSubItem.badgeValue }}</span
+                    >
+                    <i
+                      class="fa fa-angle-right pull-right"
+                      v-if="childrenSubItem.children"
+                    ></i>
+                  </a>
+                  <!-- External Tab Link -->
+                  <a
+                    :href="childrenSubItem.path"
+                    target="_blank"
+                    v-if="childrenSubItem.type == 'extTabLink'"
+                  >
+                    <i class="fa fa-circle"></i>
+                    {{ $t(childrenSubItem.title) }}
+                    <span
+                      :class="
+                        'badge badge-' +
+                        childrenSubItem.badgeType +
+                        ' pull-right'
+                      "
+                      v-if="childrenSubItem.badgeType"
+                      >{{ childrenSubItem.badgeValue }}</span
+                    >
+                    <i
+                      class="fa fa-angle-right pull-right"
+                      v-if="childrenSubItem.children"
+                    ></i>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li
+          class="right-arrow"
+          :class="{
+            'd-none':
+              layout.settings.layout_type == 'rtl'
+                ? hideRightArrowRTL
+                : hideRightArrow
+          }"
+          @click="
+            layout.settings.sidebar.type == 'horizontal_sidebar' &&
+            layout.settings.layout_type == 'rtl'
+              ? scrollToRightRTL()
+              : scrollToRight()
+          "
+        >
+          <i class="fa fa-angle-right"></i>
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
+<script>
+import { mapState } from 'vuex'
+export default {
+  name: 'AppSidebar',
+  data() {
+    return {
+      width: 0,
+      height: 0,
+      margin: 0,
+      hideRightArrowRTL: true,
+      hideLeftArrowRTL: true,
+      hideRightArrow: true,
+      hideLeftArrow: true,
+      menuWidth: 0
+    }
+  },
+  computed: {
+    ...mapState({
+      layout: (state) => state.layout.layout,
+      sidebar: (state) => state.layout.sidebarType
+    }),
+    /** @returns { object } */
+    menuItems() {
+      const data = this.$store.getters.getAppMenuData
+      return data
+    }
+  },
+  created() {
+    window.addEventListener('resize', this.handleResize)
+    this.handleResize()
+    if (this.width < 991) {
+      this.layout.settings.sidebar.type = 'default'
+    }
+    const val = this.sidebar
+    if (val == 'default') {
+      this.layout.settings.sidebar.type = 'default'
+      this.layout.settings.sidebar.body_type = 'default'
+    } else if (val == 'compact') {
+      this.layout.settings.sidebar.type = 'compact-wrapper'
+      this.layout.settings.sidebar.body_type = 'sidebar-icon'
+    } else if (val == 'compact-icon') {
+      this.layout.settings.sidebar.type = 'compact-page'
+      this.layout.settings.sidebar.body_type = 'sidebar-hover'
+    } else if (val == 'horizontal') {
+      this.layout.settings.sidebar.type = 'horizontal_sidebar'
+      this.layout.settings.sidebar.body_type = ''
+    }
+    setTimeout(() => {
+      const elmnt = document.getElementById('myDIV')
+      this.menuWidth = elmnt.offsetWidth
+      this.menuWidth > window.innerWidth
+        ? ((this.hideRightArrow = false), (this.hideLeftArrowRTL = false))
+        : ((this.hideRightArrow = true), (this.hideLeftArrowRTL = true))
+    }, 500)
+  },
+  unmounted() {
+    window.removeEventListener('resize', this.handleResize)
+  },
+  mounted() {
+    this.menuItems.filter((items) => {
+      if (items.path === this.$route.path)
+        this.$store.dispatch('setActiveRoute', items)
+      if (!items.children) return false
+      items.children.filter((subItems) => {
+        if (subItems.path === this.$route.path)
+          this.$store.dispatch('setActiveRoute', subItems)
+        if (!subItems.children) return false
+        subItems.children.filter((subSubItems) => {
+          if (subSubItems.path === this.$route.path)
+            this.$store.dispatch('setActiveRoute', subSubItems)
+        })
+      })
+    })
+  },
+  methods: {
+    setNavActive(item) {
+      this.$store.dispatch('setNavActive', item)
+    },
+    handleResize() {
+      this.width = window.innerWidth - 310
+    },
+    scrollToRightRTL() {
+      this.temp = this.width + this.margin
+      // Checking condition for remaing margin
+      if (this.temp === 0) {
+        this.margin = this.temp
+        this.hideRightArrowRTL = true
+      }
+      // else
+      else {
+        this.margin += this.width
+        this.hideRightArrowRTL = false
+        this.hideLeftArrowRTL = false
+      }
+    },
+    scrollToLeftRTL() {
+      // If Margin is reach between screen resolution
+      console.log('this.margin', this.margin)
+      if (this.margin <= -this.width) {
+        this.margin += -this.width
+        this.hideLeftArrowRTL = true
+      }
+      //Else
+      else {
+        this.margin += -this.width
+        this.hideRightArrowRTL = false
+      }
+    },
+    scrollToLeft() {
+      console.log('left')
+
+      // If Margin is reach between screen resolution
+      if (this.margin >= -this.width) {
+        this.margin = 0
+        this.hideLeftArrow = true
+      }
+      //Else
+      else {
+        this.margin += this.width
+        this.hideRightArrow = false
+      }
+    },
+    scrollToRight() {
+      this.temp = this.menuWidth + this.margin
+      // Checking condition for remaing margin
+      if (this.temp < this.menuWidth) {
+        this.margin = -this.temp
+        this.hideRightArrow = true
+      }
+      // else
+      else {
+        this.margin += -this.width
+        this.hideLeftArrow = false
+      }
+    }
+  }
+}
+</script>
+
+<style lang="scss">
+.sidebar-menu {
+  &__item {
+    &.hidden {
+      display: none;
+    }
+    a {
+      &.router-link-exact-active {
+        color: #3db9ff !important;
+      }
+    }
+    &.active {
+      a {
+        &.sidebar-header {
+          font-weight: bold !important;
+        }
+      }
+    }
+
+    .sidebar-submenu {
+      li.active {
+        a.router-link-exact-active {
+          color: #3db9ff !important;
+        }
+      }
+    }
+  }
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  &--title {
+    font-size: 24px;
+    color: #ffffff80;
+    font-weight: 300;
+    line-height: 1;
+  }
+}
+</style>
