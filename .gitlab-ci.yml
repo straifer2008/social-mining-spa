@@ -1,0 +1,73 @@
+stages:
+  - build-prod
+  - build-stage
+  - deploy-to-stage
+  - deploy-to-prod
+
+image: docker:latest
+services:
+  - docker:19.03.12-dind
+  
+variables:
+  GCP_REGISTRY_PATH: eu.gcr.io/dynamic-net-307721/grandcoin
+  IMAGE_GCP_PROD: $GCP_REGISTRY_PATH/prod/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA
+  IMAGE_GCP_STAGE: $GCP_REGISTRY_PATH/stage/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA
+  GIT_SSL_NO_VERIFY: "true"
+  SITE: registry.gitlab.com
+  IMAGE: infrastructure/rancher-compose-cli:master
+
+before_script:
+    - apk add --update openssh-client bash
+    - eval $(ssh-agent -s)
+    - bash -c 'ssh-add <(echo "$SSH_PROD_KEY")'
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - echo $GOOGLE_REGISTRY_KEY | base64 -d > google-registry.json
+
+build-prod:
+   image: docker:latest
+   services:
+    - docker:dind
+   stage: build-prod
+   script:
+    - docker login -u _json_key --password-stdin $GOOGLE_REGISTRY_URL < google-registry.json
+    - docker build -t $IMAGE_GCP_PROD .
+    - docker push $IMAGE_GCP_PROD
+   only:
+    - master
+
+build-stage:
+   image: docker:latest
+   services:
+    - docker:dind
+   stage: build-stage
+   script:
+    - docker login -u _json_key --password-stdin $GOOGLE_REGISTRY_URL < google-registry.json
+    - docker build -t $IMAGE_GCP_STAGE .
+    - docker push $IMAGE_GCP_STAGE
+   only:
+    - stage
+
+deploy-to-stage:
+  stage: deploy-to-stage
+  image: eu.gcr.io/dynamic-net-307721/grandcoin/gcloud-kubectl-helm:fe41c68a
+  script:
+    - echo $GCLOUD_SERVICE_KEY | base64 -d > ${HOME}/gcloud-service-key.json
+    - gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
+    - gcloud config set project dynamic-net-307721
+    - gcloud container clusters get-credentials grand-cluster-dev --zone europe-north1-a --project dynamic-net-307721
+    - kubectl set image -ndev  deployments/frontend-vue-grand frontend-vue-grand=$IMAGE_GCP_STAGE
+  only:
+    - stage
+
+deploy-to-prod:
+  stage: deploy-to-prod
+  image: eu.gcr.io/dynamic-net-307721/grandcoin/gcloud-kubectl-helm:fe41c68a
+  script:
+    - echo $GCLOUD_SERVICE_KEY | base64 -d > ${HOME}/gcloud-service-key.json
+    - gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
+    - gcloud config set project dynamic-net-307721
+    - gcloud container clusters get-credentials grandcluster --region europe-north1 --project dynamic-net-307721
+    - kubectl set image -nprod  deployments/frontend-vue-grand frontend-vue-grand=$IMAGE_GCP_PROD
+  only:
+    - master
