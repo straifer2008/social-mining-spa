@@ -13,7 +13,7 @@
     <div class="g-input__wrap">
       <input
         v-model="inputValue"
-        class="g-input--input form-control"
+        class="g-input--input "
         :class="[
           inputSizeClasses[size],
           {
@@ -273,7 +273,6 @@ export default {
     width: 100%;
     height: 65px;
     border-radius: 8px;
-    color: #B5BBC6;
     border: 1px solid #B5BBC6;
     padding: 20px 15px;
 

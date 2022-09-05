@@ -3,14 +3,7 @@ import { store } from '@/store'
 
 import AppLayout from '@/layouts/AppLayout.vue'
 
-import DashboardView from '@/views/app/dashboard/DashboardView.vue'
-import ComponentsView from '@/views/dev/ComponentsView.vue'
-import IconsView from '@/views/dev/IconsView.vue'
-import LaunchpadView from '@/views/app/launchpad/LaunchpadView.vue'
-import AffiliateView from '@/views/app/affiliate/AffiliateView.vue'
-import WalletView from '@/views/app/wallet/WalletView.vue'
-import BlogsView from '@/views/app/blogs/BlogsView.vue'
-import BlogView from '@/views/app/blogs/BlogsView.vue'
+import MyTasksView from '@/views/app/mytasks/MyTasksView.vue'
 
 // middleware
 import guest from './middleware/guest'
@@ -64,51 +57,9 @@ const router = createRouter({
       children: [
         {
           path: '/',
-          name: 'Dashboard',
-          component: DashboardView,
+          name: 'MyTasks',
+          component: MyTasksView,
           meta: { middleware: [auth] }
-        },
-        {
-          path: 'launchpad',
-          name: 'Launchpad',
-          component: LaunchpadView,
-          meta: { middleware: [auth] }
-        },
-        {
-          path: 'affiliate',
-          name: 'Launchpad affiliate',
-          component: AffiliateView,
-          meta: { middleware: [auth] }
-        },
-        {
-          path: 'wallet',
-          name: 'Grand Wallet',
-          component: WalletView,
-          meta: { middleware: [auth] }
-        },
-        {
-          path: 'blogs',
-          name: 'Crypto News',
-          component: BlogsView,
-          meta: { middleware: [auth] }
-        },
-        {
-          path: 'blogs/:blog_id',
-          name: '123',
-          component: BlogView,
-          meta: { middleware: [auth] }
-        },
-        {
-          path: 'components',
-          name: 'DEV Components',
-          component: ComponentsView,
-          meta: { middleware: [auth, local] }
-        },
-        {
-          path: 'icons',
-          name: 'DEV Icons',
-          component: IconsView,
-          meta: { middleware: [auth, local] }
         },
         {
           path: 'default',
@@ -118,7 +69,7 @@ const router = createRouter({
             title: 'Default Dashboard | Endless - Premium Admin Template',
             middleware: [auth]
           }
-        }
+        },
       ]
     },
     {

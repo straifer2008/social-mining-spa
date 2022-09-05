@@ -15,6 +15,7 @@ export default {
   },
   loginForm: {
     signup: 'Sign up',
+    signin: 'Sign in',
     title: 'Hey there!',
     submit: 'Login',
     labelEmail: 'E-mail',
@@ -57,11 +58,11 @@ export default {
   },
   authConfirmForm: {
     submit: 'Confirm',
-    title: 'Confirm it`s you',
-    description: `We have sent a verification code to your email. Enter code from
-    email in the box below.`,
+    title: 'Confirm your e-mail',
+    description1: `Thank you for signing up with GrandTime!`,
+    description2: `Enter the verification code that was sent to `,
     repeatTimeoutInfo: 'You can resend the code after { second } seconds',
-    repeatBtn: 'Send again',
+    repeatBtn: 'Resend code',
     placeholderCode: 'Enter 6 digit code',
     btnBack: 'Back',
     notReceive: 'Didn`t receive our message?',
@@ -332,7 +333,7 @@ export default {
     balanceRequired: 'Grand Balance Required'
   },
   appSidebar: {
-    dashboard: 'Dashboard',
+    mytasks: 'My tasks',
     grandTokenLaunchpad: 'Grand Token Launchpad',
     wallet: 'Grand Wallet',
     blogs: 'Crypto News',

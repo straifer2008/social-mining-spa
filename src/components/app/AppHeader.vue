@@ -27,7 +27,7 @@
             <ul class="nav-menus" :class="{ open: mobile_toggle }">
               <li></li>
               <li></li>
-              <LangSwitcher tag="li" />
+
               <li class="onhover-dropdown">
                 <vue-feather type="bell"></vue-feather><span class="dot"></span>
                 <ul class="notification-dropdown onhover-show-div">
@@ -99,12 +99,7 @@
                   </li>
                 </ul>
               </li>
-              <li>
-                <a href="#" @click.prevent="testNotice">
-                  <vue-feather type="message-circle"></vue-feather>
-                  <span class="dot"> </span>
-                </a>
-              </li>
+
               <li class="onhover-dropdown">
                 <div class="media align-items-center">
                   <img

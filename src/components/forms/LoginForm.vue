@@ -33,9 +33,9 @@
       <div class="form-group">
         <G-Recaptcha v-model="form['g-recaptcha-response']" ref="recaptcha" />
       </div>
-      <div class="form-group mt-3 mb-0">
+      <div class="form-group mt-3">
         <G-Button type="submit" @click.prevent="onSubmit" :loading="loading">
-          {{ $t('loginForm.signup') }}
+          {{ $t('loginForm.signin') }}
         </G-Button>
       </div>
       <div class="divider">
@@ -103,11 +103,12 @@ export default {
         this.loading = true
         try {
           const { data } = await this.$api.auth.login(this.form)
+          const email = this.form.email
           const confirmUrlToken = this.getConfirmUrlToken(data.url)
           this.resetForm()
           this.$router.push({
             name: 'Auth Confirm',
-            params: { token: confirmUrlToken }
+            params: { token: confirmUrlToken, email }
           })
         } catch (err) {
           console.log(err)
@@ -137,10 +138,6 @@ export default {
     .btn-forgot {
       width: fit-content;
     }
-  }
-
-  .form-group {
-    margin-bottom: 20px;
   }
 
   .divider {

@@ -15,6 +15,7 @@ export default {
   },
   loginForm: {
     signup: 'Sign up',
+    signin: 'Sign in',
     title: 'Hey there!',
     submit: 'Войти',
     labelEmail: 'Эл. почта',
@@ -57,11 +58,11 @@ export default {
   },
   authConfirmForm: {
     submit: 'Подтвердить',
-    title: 'Подтвердите, что это вы',
-    description: `Мы отправили проверочный код на вашу электронную почту. Введите код из
-    электронного письма в поле ниже.`,
+    title: 'Confirm your e-mail',
+    description1: `Thank you for signing up with GrandTime!`,
+    description2: `Enter the verification code that was sent to `,
     repeatTimeoutInfo: 'Вы можете отправить код заново после { second } секунд',
-    repeatBtn: 'Отправить ещё раз',
+    repeatBtn: 'Resend code',
     placeholderCode: 'Введите 6-значный код',
     btnBack: 'Назад',
     notReceive: 'Не получили наше сообщение?',
@@ -306,7 +307,7 @@ export default {
     balanceRequired: 'Необходимый баланс Grand'
   },
   appSidebar: {
-    dashboard: 'Аккаунт',
+    mytasks: 'My tasks',
     grandTokenLaunchpad: 'Лаунчпад Токен Grand',
     wallet: 'Кошелек Grand',
     blogs: 'Крипто-новости',

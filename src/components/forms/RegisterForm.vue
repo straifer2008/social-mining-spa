@@ -229,7 +229,7 @@ export default {
           localStorage.removeItem('referrer_hash')
 
           localStorage.setItem('grand_auth_token', `${data.type} ${data.token}`)
-          this.$router.push({ name: 'Dashboard' })
+          this.$router.push({ name: 'MyTasks' })
 
           // if (this.$route.params.code) {
           //   this.$router.push({ name: 'Registration' })

@@ -17,7 +17,7 @@
           <AppSidebar />
         </div>
         <div class="page-body">
-          <AppMessageList />
+
           <router-view v-slot="{ Component }">
             <transition name="default-fade" mode="out-in">
               <component :is="Component" class="view" />
@@ -27,11 +27,6 @@
         <AppFooter />
       </div>
     </div>
-
-    <TransferGrandDialog />
-    <WithdrawalGrandDialog />
-    <SetGrandWithdrawalWalletDialog />
-    <StakeGrandDialog />
   </div>
 </template>
 
