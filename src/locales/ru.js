@@ -23,8 +23,8 @@ export default {
     placeholderPassword: 'введите пароль',
     btnForgot: 'Я забыл',
     registerLink: {
-      text1: 'Ещё нет аккаунта?',
-      text2: 'Зарегистрируйтесь'
+      text1: 'Don\'t have an account?',
+      text2: 'Sign up'
     }
   },
   registerForm: {

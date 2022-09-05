@@ -30,9 +30,7 @@
       >
         {{ $t('loginForm.btnForgot') }}
       </router-link>
-      <div
-        class="form-group mb-0 mt-2 d-flex align-items-center justify-content-center"
-      >
+      <div class="form-group">
         <G-Recaptcha v-model="form['g-recaptcha-response']" ref="recaptcha" />
       </div>
       <div class="form-group mt-3 mb-0">
@@ -42,11 +40,29 @@
       </div>
       <div class="divider">
         <div class="hr"></div>
+        <span>Or use services</span>
+        <div class="hr"></div>
       </div>
-      <div class="text-center mt-3">
+      <div class="signup">
+        <img src="/img/icons/google-icon.svg" />
+        Sign up with Google
+      </div>
+      <div class="flex">
+        <div class="signup">
+          <img src="/img/icons/facebook-icon.svg" />
+          Sign up with Facebook
+        </div>
+        <div class="signup">
+          <img src="/img/icons/facebook-icon.svg" />
+          Sign up with Wallet
+        </div>
+      </div>
+      <div class="flex">
         {{ $t('loginForm.registerLink.text1') }}
         <router-link class="btn-link text-capitalize" to="/auth/register">
-          {{ $t('loginForm.registerLink.text2') }}
+          <div class="signup main">
+            {{ $t('loginForm.registerLink.text2') }}
+          </div>
         </router-link>
       </div>
     </form>
@@ -129,11 +145,48 @@ export default {
 
   .divider {
     display: flex;
+    align-items: center;
+    margin-bottom: 20px;
 
     .hr {
       width: 100%;
       border: 1px solid #EBECF0;
+    }
 
+    span {
+      font-size: 14px;
+      margin: 0 31px;
+      text-align: center;
+      white-space: nowrap;
+    }
+  }
+
+  .signup {
+    height: 65px;
+    border: 1px solid #B5BBC6;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    cursor: pointer;
+    width: 100%;
+
+    &.main {
+      border-color: black;
+      width: 140px;
+    }
+  }
+
+  .flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin: 20px 0;
+
+    a {
+      text-decoration: none;
     }
   }
 
