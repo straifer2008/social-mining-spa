@@ -4,7 +4,7 @@
       <UserMiniCard :user="referrer" />
     </div>
     <div class="text-center">
-      <h5 class="auth-form--title mb-0">{{ $t('registerForm.title') }}</h5>
+      <h5 class="auth-form--title mb-5">{{ $t('registerForm.title') }}!</h5>
     </div>
     <form
       class="theme-form"
@@ -12,13 +12,36 @@
       @submit.prevent="onSubmit"
       @keypress.enter="onSubmit"
     >
+      <div class="form-group mb-3 task-purpose d-flex justify-content-between mb-4">
+        <div
+          class="task-button d-flex justify-content-center align-items-center"
+          :class="{active: form.taskPurpose === 'left'}"
+          @click="toggleTaskPurpose('left')"
+        >
+          I want to do tasks and earn crypto
+        </div>
+        <div
+          class="task-button d-flex justify-content-center align-items-center"
+          :class="{active: form.taskPurpose === 'right'}"
+          @click="toggleTaskPurpose('right')"
+        >
+          I need tasks done for me
+        </div>
+      </div>
+      <div class="form-group mb-3">
+        <G-Input
+          v-model="form.name"
+          ref="name"
+          :placeholder="$t('registerForm.placeholderName')"
+          required
+        />
+      </div>
       <div class="form-group mb-3">
         <G-Input
           v-model="form.email"
           ref="email"
           type="email"
           :rules="[rules.required, rules.email]"
-          :label="$t('registerForm.labelEmail')"
           :placeholder="$t('registerForm.placeholderEmail')"
           required
         />
@@ -36,7 +59,6 @@
             rules.containsUpperCase,
             rules.containsLowerCase
           ]"
-          :label="$t('registerForm.labelPassword')"
           :placeholder="$t('registerForm.placeholderPassword')"
           required
         />
@@ -47,28 +69,28 @@
           type="password"
           ref="passwordRepeat"
           :rules="[rules.required, rules.mismatch]"
-          :label="$t('registerForm.labelPasswordRepeat')"
           :placeholder="$t('registerForm.placeholderPasswordRepeat')"
           required
         />
       </div>
-
-      <div class="text-center">
-        <h5 class="auth-form--title">
-          {{ $t('registerForm.aboutYourSelfTitle') }}
-        </h5>
+      <div class="form-group mb-3">
+        <G-Input
+          v-model="form.companyName"
+          ref="companyName"
+          :placeholder="$t('registerForm.placeholderCompanyName')"
+          required
+        />
       </div>
 
       <div class="form-row">
         <div class="col-sm-6">
           <div class="form-group mb-3">
             <G-Select
-              v-model="form.gender"
+              v-model="form.companyProfile"
               :items="genderList"
-              ref="gender"
+              ref="companyProfile"
               :rules="[rules.required]"
-              :label="$t('registerForm.labelGender')"
-              :placeholder="$t('registerForm.placeholderGender')"
+              :placeholder="$t('registerForm.placeholderCompanyProfile')"
               required
             />
           </div>
@@ -76,29 +98,16 @@
         <div class="col-sm-6">
           <div class="form-group mb-3">
             <G-Select
-              v-model="form.country"
+              v-model="form.companyStaffQuantity"
               :items="countriesList"
               itemValue="id"
-              ref="country"
-              autocomplete
+              ref="companyStaffQuantity"
               :rules="[rules.required]"
-              :label="$t('registerForm.labelCountry')"
-              :placeholder="$t('registerForm.placeholderCountry')"
+              :placeholder="$t('registerForm.placeholderCompanyStaffQuantity')"
               required
             />
           </div>
         </div>
-      </div>
-
-      <div class="form-group mb-3">
-        <G-Input
-          v-model="form.birthDate"
-          type="date"
-          ref="birthday"
-          :rules="[rules.required, rules.dateInRange]"
-          :label="$t('registerForm.labelBirthDay')"
-          required
-        />
       </div>
 
       <G-Checkbox
@@ -108,27 +117,51 @@
         class="w-fit m-auto"
       >
         {{ $t('registerForm.labelAgreement[0]') }}
-        <router-link to="/">{{
-          $t('registerForm.labelAgreement[1]')
-        }}</router-link>
+        <router-link to="/">
+          {{ $t('registerForm.labelAgreement[1]') }}
+        </router-link>
       </G-Checkbox>
 
-      <div
-        class="form-group mb-0 mt-3 d-flex align-items-center justify-content-center"
-      >
+      <div class="form-group mb-0 mt-3 d-flex align-items-center justify-content-center">
         <G-Recaptcha v-model="form['g-recaptcha-response']" ref="recaptcha" />
       </div>
-      <div class="form-group mt-3 mb-0">
+      <div class="form-group mt-3 mb-4">
         <G-Button type="submit" :loading="loading">
-          {{ $t('registerForm.submit') }}
+          {{ $t('registerForm.title') }}
         </G-Button>
       </div>
-      <div class="text-center mt-3">
+
+      <div class="divider">
+        <div class="hr"></div>
+        <span>Or use services</span>
+        <div class="hr"></div>
+      </div>
+
+      <div class="signup">
+        <img src="/img/icons/google-icon.svg" />
+        Sign up with Google
+      </div>
+
+      <div class="flex">
+        <div class="signup">
+          <img src="/img/icons/facebook-icon.svg" />
+          Sign up with Facebook
+        </div>
+        <div class="signup">
+          <img src="/img/icons/facebook-icon.svg" />
+          Sign up with Wallet
+        </div>
+      </div>
+
+      <div class="flex">
         {{ $t('registerForm.loginLink[0]') }}
         <router-link class="btn-link text-capitalize" to="/auth/login">
-          {{ $t('registerForm.loginLink[1]') }}
+          <div class="signup main">
+            {{ $t('registerForm.loginLink[1]') }}
+          </div>
         </router-link>
       </div>
+
     </form>
   </AuthFormCard>
 </template>
@@ -165,9 +198,11 @@ export default {
       formKey: 0,
       loading: false,
       form: {
+        taskPurpose: 'left',
         email: '',
         password: '',
         passwordRepeat: '',
+        companyName: '',
         birthDate: '',
         'g-recaptcha-response': '',
         type: 'email',
@@ -218,6 +253,9 @@ export default {
     }
   },
   methods: {
+    toggleTaskPurpose(option) {
+      this.form.taskPurpose = option
+    },
     async onSubmit() {
       const valid = isThisRefsValid(this.$refs)
       if (valid) {
@@ -281,6 +319,77 @@ export default {
   &__referrer {
     width: fit-content;
     margin: 0 auto 15px;
+  }
+
+  .task-purpose {
+    padding: 7px;
+    border: 1px solid #B5BBC6;
+    border-radius: 8px;
+
+    .task-button {
+      color: #45516C;
+      background: none;
+      border: 0;
+      border-radius: 8px;
+      height: 55px;
+      padding: 13px 18px;
+      text-align: center;
+      white-space: nowrap;
+      cursor: pointer;
+
+      &.active {
+        color: #fff;
+        background: #3279FD;
+        border: 0;
+      }
+    }
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .hr {
+      width: 100%;
+      border: 1px solid #EBECF0;
+    }
+
+    span {
+      font-size: 14px;
+      margin: 0 31px;
+      text-align: center;
+      white-space: nowrap;
+    }
+  }
+
+  .signup {
+    height: 65px;
+    border: 1px solid #B5BBC6;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    cursor: pointer;
+    width: 100%;
+
+    &.main {
+      border-color: black;
+      width: 140px;
+    }
+  }
+
+  .flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin: 20px 0;
+
+    a {
+      text-decoration: none;
+    }
   }
 }
 </style>

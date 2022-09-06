@@ -30,8 +30,8 @@
       </div>
 
       <router-link
-              to="/auth/login"
-              class="btn-link btn-forgot d-block ml-auto w-fit mt-3"
+        to="/auth/login"
+        class="btn-link btn-forgot d-block ml-auto w-fit mt-3"
       >
         {{ $t('authConfirmForm.btnBack') }}
       </router-link>
