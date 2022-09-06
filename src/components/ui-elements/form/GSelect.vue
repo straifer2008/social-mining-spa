@@ -30,6 +30,7 @@
           class="g-select__select--placeholder"
         >
           <img
+            v-if="false"
             width="20"
             height="20"
             :src="`/img/currencies/grand.svg`"
@@ -73,6 +74,7 @@
           @click="onSelect(item)"
         >
           <img
+            v-if="false"
             width="20"
             height="20"
             :src="`/img/currencies/${item[itemName]}.svg`"
@@ -314,13 +316,13 @@ export default {
     &.required {
       position: relative;
 
-      &::after {
+      /*&::after {
         content: '*';
         position: absolute;
         top: -2px;
         right: -8px;
         color: #4466f2;
-      }
+      }*/
     }
   }
 
@@ -333,6 +335,10 @@ export default {
     color: var(--dark);
     cursor: pointer;
     user-select: none;
+    height: 65px !important;
+    display: flex !important;
+    align-items: center;
+    border-radius: 8px !important;
 
     &--name,
     &--placeholder {
@@ -340,7 +346,7 @@ export default {
       text-overflow: ellipsis;
       overflow-x: hidden;
       display: block;
-      text-align: right;
+      /*text-align: right;*/
       padding-right: 20px;
     }
 

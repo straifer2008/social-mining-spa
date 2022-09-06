@@ -33,20 +33,24 @@
       <div class="form-group">
         <G-Recaptcha v-model="form['g-recaptcha-response']" ref="recaptcha" />
       </div>
+
       <div class="form-group mt-3">
         <G-Button type="submit" @click.prevent="onSubmit" :loading="loading">
           {{ $t('loginForm.signin') }}
         </G-Button>
       </div>
+
       <div class="divider">
         <div class="hr"></div>
         <span>Or use services</span>
         <div class="hr"></div>
       </div>
+
       <div class="signup">
         <img src="/img/icons/google-icon.svg" />
         Sign up with Google
       </div>
+
       <div class="flex">
         <div class="signup">
           <img src="/img/icons/facebook-icon.svg" />
@@ -57,6 +61,7 @@
           Sign up with Wallet
         </div>
       </div>
+
       <div class="flex">
         {{ $t('loginForm.registerLink.text1') }}
         <router-link class="btn-link text-capitalize" to="/auth/register">
@@ -65,6 +70,7 @@
           </div>
         </router-link>
       </div>
+
     </form>
   </AuthFormCard>
 </template>
