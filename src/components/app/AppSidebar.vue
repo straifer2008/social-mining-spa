@@ -6,7 +6,7 @@
           <img
             width="42"
             height="42"
-            src="/img/icons/grand-icon.svg"
+            src="/img/icons/grand-icon.png"
             alt="logo"
             class="logo-link--image"
           />
