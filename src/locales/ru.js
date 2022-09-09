@@ -310,7 +310,12 @@ export default {
     balanceRequired: 'Необходимый баланс Grand'
   },
   appSidebar: {
-    mytasks: 'My tasks',
+    myTasks: 'My tasks',
+    createNew: 'Create new',
+    taskList: 'Task list',
+    myProfile: 'My profile',
+    knowledgeHelp: 'Knowledge help',
+
     grandTokenLaunchpad: 'Лаунчпад Токен Grand',
     wallet: 'Кошелек Grand',
     blogs: 'Крипто-новости',
