@@ -14,23 +14,16 @@
         </router-link>
       </div>
     </div>
+
+    <div class="avatar"></div>
+    <div class="name">Joey</div>
+    <div class="company">Marketing company</div>
+    <div class="wallet">
+      <img src="/img/icons/wallet.svg" />
+      125.45 USD / 125 GRAND
+    </div>
+
     <div class="sidebar custom-scrollbar">
-      <!-- <div class="sidebar-user text-center">
-        <div>
-          <img
-            class="img-60 rounded-circle"
-            src="@/assets/images/user/1.jpg"
-            alt="#"
-          />
-          <div class="profile-edit">
-            <router-link to="/users/edit">
-              <vue-feather type="edit"></vue-feather>
-            </router-link>
-          </div>
-        </div>
-        <h6 class="mt-3 f-14">ELANA</h6>
-        <p>general manager.</p>
-      </div> -->
       <ul
         class="sidebar-menu"
         id="myDIV"
@@ -62,7 +55,7 @@
         <li
           v-for="(menuItem, index) in menuItems"
           :key="index"
-          class="sidebar-menu__item"
+          class="sidebar-menu__item mb-3"
           :class="{ active: menuItem.active, hidden: menuItem.hidden }"
         >
           <!-- Sub -->
@@ -72,8 +65,8 @@
             v-if="menuItem.type == 'sub'"
             @click="setNavActive(menuItem, index)"
           >
-            <vue-feather :type="menuItem.icon" class="top"></vue-feather>
-            <span>
+            <img :src="`/img/icons/menu/${menuItem.icon}.svg`" />
+            <span class="ml-3">
               {{ $t(menuItem.title) }}
               <span
                 :class="'badge badge-pill badge-' + menuItem.badgeType"
@@ -92,8 +85,8 @@
             class="sidebar-header"
             v-if="menuItem.type == 'link'"
           >
-            <vue-feather :type="menuItem.icon" class="top"></vue-feather>
-            <span>
+            <img :src="`/img/icons/menu/${menuItem.icon}.svg`" />
+            <span class="ml-3">
               {{ $t(menuItem.title) }}
               <span
                 :class="'badge badge-' + menuItem.badgeType + ' ml-3'"
@@ -113,8 +106,8 @@
             v-if="menuItem.type == 'extLink'"
             @click="setNavActive(menuItem, index)"
           >
-            <vue-feather :type="menuItem.icon" class="top"></vue-feather>
-            <span>
+            <img :src="`/img/icons/menu/${menuItem.icon}.svg`" />
+            <span class="ml-3">
               {{ $t(menuItem.title) }}
               <span
                 :class="'badge badge-' + menuItem.badgeType + ' ml-3'"
@@ -135,8 +128,8 @@
             v-if="menuItem.type == 'extTabLink'"
             @click="setNavActive(menuItem, index)"
           >
-            <vue-feather :type="menuItem.icon" class="top"></vue-feather>
-            <span>
+            <img :src="`/img/icons/menu/${menuItem.icon}.svg`" />
+            <span class="ml-3">
               {{ $t(menuItem.title) }}
               <span
                 :class="'badge badge-' + menuItem.badgeType + ' ml-3'"
@@ -154,7 +147,7 @@
             <li
               v-for="(childrenItem, index) in menuItem.children"
               :key="index"
-              :class="{ active: childrenItem.active }"
+              :class="{ active: childrenItem.active, 'mb-3': true, 'mt-3': index === 0}"
             >
               <!-- Sub -->
               <a
@@ -162,15 +155,14 @@
                 v-if="childrenItem.type == 'sub'"
                 @click="setNavActive(childrenItem, index)"
               >
-                <i class="fa fa-circle"></i>
+
                 {{ $t(childrenItem.title) }}
                 <span
-                  :class="
-                    'badge badge-' + childrenItem.badgeType + ' pull-right'
-                  "
+                  :class="'badge badge-' + childrenItem.badgeType + ' pull-right'"
                   v-if="childrenItem.badgeType"
-                  >{{ childrenItem.badgeValue }}</span
                 >
+                  {{ childrenItem.badgeValue }}
+                </span>
                 <i
                   class="fa fa-angle-right pull-right"
                   v-if="childrenItem.children"
@@ -181,7 +173,7 @@
                 :to="childrenItem.path"
                 v-if="childrenItem.type == 'link'"
               >
-                <i class="fa fa-circle"></i>
+
                 {{ $t(childrenItem.title) }}
                 <span
                   :class="
@@ -200,7 +192,7 @@
                 :href="childrenItem.path"
                 v-if="childrenItem.type == 'extLink'"
               >
-                <i class="fa fa-circle"></i>
+
                 {{ $t(childrenItem.title) }}
                 <span
                   :class="
@@ -220,7 +212,7 @@
                 target="_blank"
                 v-if="childrenItem.type == 'extTabLink'"
               >
-                <i class="fa fa-circle"></i>
+
                 <span>
                   {{ $t(childrenItem.title) }}
                   <i
@@ -254,7 +246,7 @@
                     :to="childrenSubItem.path"
                     v-if="childrenSubItem.type == 'link'"
                   >
-                    <i class="fa fa-circle"></i>
+
                     {{ $t(childrenSubItem.title) }}
                     <span
                       :class="
@@ -275,7 +267,7 @@
                     :href="childrenSubItem.path"
                     v-if="childrenSubItem.type == 'extLink'"
                   >
-                    <i class="fa fa-circle"></i>
+
                     {{ $t(childrenSubItem.title) }}
                     <span
                       :class="
@@ -297,7 +289,7 @@
                     target="_blank"
                     v-if="childrenSubItem.type == 'extTabLink'"
                   >
-                    <i class="fa fa-circle"></i>
+
                     {{ $t(childrenSubItem.title) }}
                     <span
                       :class="
@@ -336,9 +328,22 @@
           <i class="fa fa-angle-right"></i>
         </li>
       </ul>
+
+      <ul class="sidebar-menu">
+        <li class="sidebar-menu__item mb-3">
+          <a href="/need-help" class="sidebar-header">
+            <img src="/img/icons/menu/need-help.svg">
+            <span class="ml-3">
+              Need help
+            </span>
+          </a>
+        </li>
+      </ul>
+
     </div>
   </div>
 </template>
+
 <script>
 import { mapState } from 'vuex'
 export default {
@@ -479,44 +484,101 @@ export default {
 </script>
 
 <style lang="scss">
-.sidebar-menu {
-  &__item {
-    &.hidden {
-      display: none;
-    }
-    a {
-      &.router-link-exact-active {
-        color: #3db9ff !important;
-      }
-    }
-    &.active {
-      a {
-        &.sidebar-header {
-          font-weight: bold !important;
-        }
-      }
-    }
-
-    .sidebar-submenu {
-      li.active {
-        a.router-link-exact-active {
-          color: #3db9ff !important;
-        }
-      }
-    }
+  .main-header-left {
+    box-shadow: none !important;
   }
-}
 
-.logo-link {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+  .avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #D9D9D9;
+    margin: 40px auto 10px;
+  }
 
-  &--title {
+  .name {
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
     color: #fff;
-    font-size: 20px;
-    line-height: 31px;
-    font-weight: 700;
+    margin-bottom: 9px;
   }
-}
+
+  .company {
+    font-size: 12px;
+    line-height: 18px;
+    color: #B5BBC6;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .wallet {
+    width: 211px;
+    height: 55px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #7CD5A61A;
+    border-radius: 3px;
+    border-left: 2px solid #fff;
+    padding: 0 18px;
+    color: #fff;
+    font-size: 12px;
+
+    img {
+      margin-right: 10px;
+    }
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: none !important;
+
+    ul {
+      flex-basis: auto;
+    }
+  }
+
+  .sidebar-menu {
+    flex-basis: 100%;
+
+    &__item {
+      &.hidden {
+        display: none;
+      }
+      a {
+        &.router-link-exact-active {
+
+        }
+      }
+      &.active {
+        a {
+          &.sidebar-header {
+            font-weight: bold !important;
+          }
+        }
+      }
+
+      .sidebar-submenu {
+
+      }
+    }
+  }
+
+  .logo-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    &--title {
+      color: #fff;
+      font-size: 20px;
+      line-height: 31px;
+      font-weight: 700;
+    }
+  }
 </style>
+

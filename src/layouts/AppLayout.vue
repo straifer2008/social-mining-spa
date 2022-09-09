@@ -125,4 +125,8 @@ export default {
     opacity: 0;
   }
 }
+
+  .page-body {
+    min-height: calc(100vh - 133px) !important;
+  }
 </style>

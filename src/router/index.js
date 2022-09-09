@@ -3,7 +3,11 @@ import { store } from '@/store'
 
 import AppLayout from '@/layouts/AppLayout.vue'
 
-import MyTasksView from '@/views/app/mytasks/MyTasksView.vue'
+import MyTasksView from '@/views/app/MyTasks/MyTasksView.vue'
+import CreateNewView from '@/views/app/MyTasks/CreateNewView.vue'
+import MyProfileView from '@/views/app/MyProfile/MyProfileView.vue'
+import KnowledgeHelpView from '@/views/app/KnowledgeHelp/KnowledgeHelpView.vue'
+
 
 // middleware
 import guest from './middleware/guest'
@@ -59,6 +63,30 @@ const router = createRouter({
           path: '/',
           name: 'MyTasks',
           component: MyTasksView,
+          meta: { middleware: [auth] }
+        },
+        {
+          path: 'create-new',
+          name: 'CreateNew',
+          component: CreateNewView,
+          meta: { middleware: [auth] }
+        },
+        {
+          path: 'my-tasks',
+          name: 'MyTasks',
+          component: MyTasksView,
+          meta: { middleware: [auth] }
+        },
+        {
+          path: 'my-profile',
+          name: 'MyProfile',
+          component: MyProfileView,
+          meta: { middleware: [auth] }
+        },
+        {
+          path: 'knowledge-help',
+          name: 'KnowledgeHelp',
+          component: KnowledgeHelpView,
           meta: { middleware: [auth] }
         },
         {

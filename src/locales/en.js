@@ -336,7 +336,12 @@ export default {
     balanceRequired: 'Grand Balance Required'
   },
   appSidebar: {
-    mytasks: 'My tasks',
+    myTasks: 'My tasks',
+    createNew: 'Create new',
+    taskList: 'Task list',
+    myProfile: 'My profile',
+    knowledgeHelp: 'Knowledge help',
+
     grandTokenLaunchpad: 'Grand Token Launchpad',
     wallet: 'Grand Wallet',
     blogs: 'Crypto News',
