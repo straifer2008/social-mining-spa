@@ -51,12 +51,6 @@ build-stage:
 deploy-to-stage:
   stage: deploy-to-stage
   image: eu.gcr.io/dynamic-net-307721/grandcoin/gcloud-kubectl-helm:fe41c68a
-  variables:
-    VITE_API_URL: https://api.grandtime.tech
-    VITE_SOCKET_URL: https://events-k8s.grandtime.tech/client
-    VITE_RECAPTCHA_SITE_KEY: 6LdNUIgfAAAAADGiC-xcdOir0JYiiEBDYy9Rrwgo
-    VITE_GRAND_TOKEN_ADDRESS: 0xC41214fC9f2bD9705e7A271409471161aa0e8808
-    VITE_ETHEREUM_CHAIN_ID: 137
   script:
     - echo $GCLOUD_SERVICE_KEY | base64 -d > ${HOME}/gcloud-service-key.json
     - gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
