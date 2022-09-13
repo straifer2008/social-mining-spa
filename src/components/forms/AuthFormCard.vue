@@ -30,9 +30,15 @@ export default {
     border-radius: 10px;
     width: 680px;
   }
-
-  @media (max-width: 1024px) {
-    width: 100%;
-  }
 }
+
+  @media screen and (max-width: 768px) {
+    .auth-form {
+      .card-body {
+        width: 100%;
+        padding: 20px;
+      }
+    }
+  }
+
 </style>

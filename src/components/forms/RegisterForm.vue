@@ -392,4 +392,14 @@ export default {
     }
   }
 }
+
+  @media screen and (max-width: 768px) {
+    .register-form .task-purpose {
+      flex-direction: column;
+
+      .task-button {
+        white-space: normal;
+      }
+    }
+  }
 </style>
