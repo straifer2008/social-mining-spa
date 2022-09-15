@@ -240,7 +240,7 @@ export default {
           )
         }
       },
-      countriesList: []
+      countriesList: ['2-5', '6-10', '10-20', '21-50','Over 50']
     }
   },
   computed: {
@@ -307,7 +307,7 @@ export default {
     }
   },
   async created() {
-    this.countriesList = await this.$api.location.getCountries()
+    //this.countriesList = await this.$api.location.getCountries()
 
     this.checkReferrerCode()
   }

@@ -1,7 +1,7 @@
 export default {
   rules: {
-    required: 'required field',
-    email: 'Must be a valid e-mail address',
+    required: 'Required field',
+    email: 'Must be a valid email address',
     min: 'min. { min }',
     max: 'max. { max }',
     pswMinLength: 'min. characters { minLength }',
@@ -17,12 +17,12 @@ export default {
     signup: 'Sign up',
     signin: 'Sign in',
     title: 'Hey there!',
-    submit: 'Login',
-    labelEmail: 'E-mail',
+    submit: 'Sign in',
+    labelEmail: 'Email',
     placeholderEmail: 'Your email address',
     labelPassword: 'Password',
-    placeholderPassword: 'enter password',
-    btnForgot: 'I forgot',
+    placeholderPassword: 'Password',
+    btnForgot: 'Forgot a password?',
     registerLink: {
       text1: 'Don\'t have an account?',
       text2: 'Sign up'
@@ -31,8 +31,8 @@ export default {
   registerForm: {
     title: 'Sign Up',
     placeholderName: 'Full name',
-    labelEmail: 'E-mail',
-    placeholderEmail: 'Your e-mail address',
+    labelEmail: 'Email',
+    placeholderEmail: 'Your email address',
     labelPassword: 'Password',
     placeholderPassword: 'Pick a password',
     labelPasswordRepeat: 'Repeat a password',
@@ -61,7 +61,7 @@ export default {
   },
   authConfirmForm: {
     submit: 'Confirm',
-    title: 'Confirm your e-mail',
+    title: 'Confirm your email',
     description1: `Thank you for signing up with GrandTime!`,
     description2: `Enter the verification code that was sent to `,
     repeatTimeoutInfo: 'You can resend the code after { second } seconds',
@@ -74,9 +74,9 @@ export default {
   resetPasswordForm: {
     submit: 'Reset my password',
     title: 'Password reset',
-    labelEmail: 'E-mail',
-    placeholderEmail: 'enter e-mail',
-    lonkLogin: 'Login',
+    labelEmail: 'Email',
+    placeholderEmail: 'Enter email',
+    lonkLogin: 'Sign in',
     submitSuccessMessage:
       'Password reset instructions have been sent to your email. mail. Of course, if you were registered before.'
   },

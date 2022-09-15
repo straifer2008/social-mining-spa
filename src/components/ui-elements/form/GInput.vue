@@ -286,6 +286,9 @@ export default {
       height: 41px;
       font-size: 16px !important;
     }
+    &:focus {
+      outline-color: #3279FD;
+    }
   }
 
   &__message {
