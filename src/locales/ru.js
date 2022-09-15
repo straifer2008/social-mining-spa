@@ -1,7 +1,7 @@
 export default {
   rules: {
     required: 'обязательное поле',
-    email: 'Must be a valid e-mail address',
+    email: 'Must be a valid email address',
     min: 'мин. { min }',
     max: 'макс. { max }',
     pswMinLength: 'мин. количество символов { minLength }',
@@ -19,7 +19,7 @@ export default {
     title: 'Hey there!',
     submit: 'Войти',
     labelEmail: 'Эл. почта',
-    placeholderEmail: 'Your e-mail address',
+    placeholderEmail: 'Your email address',
     labelPassword: 'Пароль',
     placeholderPassword: 'Pick a password',
     btnForgot: 'Я забыл',
@@ -32,7 +32,7 @@ export default {
     title: 'Sign Up',
     placeholderName: 'Full name',
     labelEmail: 'Эл. почта',
-    placeholderEmail: 'Your e-mail address',
+    placeholderEmail: 'Your email address',
     labelPassword: 'Пароль',
     placeholderPassword: 'Pick a password',
     labelPasswordRepeat: 'Повторите пароль',
@@ -61,7 +61,7 @@ export default {
   },
   authConfirmForm: {
     submit: 'Подтвердить',
-    title: 'Confirm your e-mail',
+    title: 'Confirm your email',
     description1: `Thank you for signing up with GrandTime!`,
     description2: `Enter the verification code that was sent to `,
     repeatTimeoutInfo: 'Вы можете отправить код заново после { second } секунд',

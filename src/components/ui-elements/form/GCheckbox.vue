@@ -61,7 +61,7 @@ export default {
       }
     },
     modelValue: {
-      immediate: true,
+      immediate: false,
       handler(val) {
         this.inputValue = val
         if (this.rules && !this.errorHandlerOnBlur) {
