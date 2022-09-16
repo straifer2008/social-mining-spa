@@ -44,6 +44,7 @@
           class="g-select__select--name"
         >
           <img
+            v-if="false"
             width="20"
             height="20"
             :src="`/img/currencies/${selectedValue}.svg`"
