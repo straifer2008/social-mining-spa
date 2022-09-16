@@ -40,7 +40,7 @@
         <G-Input
           v-model="form.email"
           ref="email"
-          type="email"
+          type="text"
           :rules="[rules.required, rules.email]"
           :placeholder="$t('registerForm.placeholderEmail')"
           required
