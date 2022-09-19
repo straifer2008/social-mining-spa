@@ -92,7 +92,7 @@ export default {
       font-size: 40px;
       font-weight: 500;
       line-height: 64px;
-			margin-top: 20px;
+			margin-top: 250px;
 			margin-right: 50px;
 			margin-bottom: 25px;
 			max-width: 700px;
