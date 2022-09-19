@@ -4,7 +4,7 @@
     :class="{'currencySelect': currencySelect}"
     v-click-outside="closeList"
   >
-    <label class="g-select__label" :class="{ required: required }">
+    <label v-if="false" class="g-select__label" :class="{ required: required }">
       {{ label }}
     </label>
     <div
