@@ -62,7 +62,7 @@
         </div>
       </div>
 
-      <div class="flex">
+      <div class="flex signup-button">
         {{ $t('loginForm.registerLink.text1') }}
         <router-link class="btn-link text-capitalize" to="/auth/register">
           <div class="signup main">
@@ -190,6 +190,11 @@ export default {
 
     a {
       text-decoration: none;
+    }
+
+    &.signup-button {
+      margin-top: 40px;
+      margin-bottom: 0;
     }
   }
 

@@ -83,10 +83,10 @@ const containsSymbol = (v, message) =>
   /[|\\/~^:,;?!&%$#@*+()]/.test(v) || message || $t('rules.containsSymbol')
 
 const containsUpperCase = (v, message) =>
-  /(?=.*[A-Z])/.test(v) || message || $t('rules.containsUpperCase')
+  /(?=.*[A-ZА-Я])/.test(v) || message || $t('rules.containsUpperCase')
 
 const containsLowerCase = (v, message) =>
-  /(?=.*[a-z])/.test(v) || message || $t('rules.containsLowerCase')
+  /(?=.*[a-zа-я])/.test(v) || message || $t('rules.containsLowerCase')
 
 export {
   required,

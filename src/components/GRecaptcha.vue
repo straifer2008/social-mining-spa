@@ -36,7 +36,7 @@ export default {
   emits: ['apply', 'update:modelValue'],
   data() {
     return {
-      recaptchaSiteKey: import.meta.env.VITE_RECAPTCHA_SITE_KEY,
+      recaptchaSiteKey: import.meta.env.VITE_GOOGLE_RECAPTCHA_SECRET,
       valid: true
     }
   },

@@ -4,7 +4,7 @@
       <UserMiniCard :user="referrer" />
     </div>
     <div class="text-center">
-      <h5 class="auth-form--title mb-5">{{ $t('registerForm.title') }}!</h5>
+      <h5 class="auth-form--title">{{ $t('registerForm.title') }}!</h5>
     </div>
     <form
       class="theme-form"
@@ -12,7 +12,7 @@
       @submit.prevent="onSubmit"
       @keypress.enter="onSubmit"
     >
-      <div class="form-group mb-3 task-purpose d-flex justify-content-between mb-4">
+      <div class="form-group task-purpose d-flex justify-content-between">
         <div
           class="task-button d-flex justify-content-center align-items-center"
           :class="{active: form.taskPurpose === 'left'}"
@@ -153,7 +153,7 @@
         </div>
       </div>
 
-      <div class="flex">
+      <div class="flex signin">
         {{ $t('registerForm.loginLink[0]') }}
         <router-link class="btn-link text-capitalize" to="/auth/login">
           <div class="signup main">
@@ -325,6 +325,7 @@ export default {
     padding: 7px;
     border: 1px solid #B5BBC6;
     border-radius: 8px;
+    margin-bottom: 40px;
 
     .task-button {
       color: #45516C;
@@ -389,6 +390,11 @@ export default {
 
     a {
       text-decoration: none;
+    }
+
+    &.signin {
+      margin-top: 40px;
+      margin-bottom: 0;
     }
   }
 }

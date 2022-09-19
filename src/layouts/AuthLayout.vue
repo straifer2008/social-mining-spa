@@ -1,6 +1,26 @@
 <template>
   <div class="auth-layout">
-    <div class="auth-layout__content">
+    <div class="auth-layout__left" >
+      <img class="logo" src="/img/Logo.svg" />
+			<div v-if="showIntro">
+				<h1>Welcome to Grand Time social mining platform!</h1>
+				<div class="desc">
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+				</div>
+				<div class="in-action">
+					<img src="/img/icons/seeInAction.svg" />
+					See in action
+				</div>
+				<div
+					class="get-started"
+					v-if="windowWidth <= 1200"
+					@click="hideIntro"
+				>
+					Get Started
+				</div>
+			</div>
+    </div>
+    <div v-if="windowWidth > 1200 || !showIntro" class="auth-layout__form">
       <RouterView v-slot="{ Component }">
         <transition name="view-fade" mode="out-in">
           <component :is="Component" />
@@ -12,7 +32,33 @@
 
 <script>
 export default {
-  name: 'AuthLayout'
+  name: 'AuthLayout',
+	data() {
+    return {
+      windowWidth: window.innerWidth,
+			showIntro: true,
+		}
+	},
+
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener('resize', this.onResize);
+    })
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize);
+  },
+
+  methods: {
+    onResize() {
+      this.windowWidth = window.innerWidth
+    },
+		hideIntro() {
+      this.showIntro = false
+		}
+  }
+
 }
 </script>
 
@@ -20,34 +66,92 @@ export default {
 .auth-layout {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background-image: linear-gradient(45deg, #0c5aff, #3db9ff);
-  padding: 50px 15% 50px 0;
+  justify-content: space-between;
+  background: url('/img/Background.svg');
+  background-size: cover;
+  padding: 30px 198px 30px 80px;
 
-  @media (max-width: 1024px) {
-    padding: 20px;
+  @media (max-width: 1400px) {
+    padding: 30px;
   }
 
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-image: url(/img/icons/grand-icon.svg);
-    background-size: 50%;
-    background-position: 0 40%;
-    background-repeat: no-repeat;
-    @media (max-width: 768px) {
-      background-size: 20%;
-      background-repeat: repeat;
-      background-position: unset;
+	@media (max-width: 1200px) {
+		flex-direction: column;
+		justify-content: flex-start;
+	}
+
+  &__left {
+    color: #fff;
+
+    .logo {
+      margin-bottom: 20px;
     }
+
+    h1 {
+      text-align: left;
+      font-size: 40px;
+      font-weight: 500;
+      line-height: 64px;
+			margin-top: 20px;
+			margin-right: 50px;
+			margin-bottom: 25px;
+			max-width: 700px;
+
+			@media (max-width: 1200px) {
+				margin-top: 120px;
+				margin-right: 0;
+			}
+
+			@media (max-width: 576px) {
+				font-size: 25px;
+				font-weight: 500;
+				line-height: 40px;
+			}
+    }
+
+    .desc {
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 35px;
+      max-width: 840px;
+      margin-bottom: 55px;
+			margin-right: 50px;
+
+			@media (max-width: 1200px) {
+				margin-right: 0;
+			}
+
+			@media (max-width: 576px) {
+				font-size: 15px;
+				line-height: 26px;
+			}
+    }
+
+    .in-action {
+			display: flex;
+			align-items: center;
+			gap: 20px;
+			cursor: pointer;
+			margin-left: 10px;
+    }
+
+		.get-started {
+			cursor: pointer;
+			background: #fff;
+			width: 320px;
+			position: absolute;
+			bottom: 30px;
+			left: calc(50% - 160px);
+			color: #0E1D40;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			border-radius: 8px;
+			height: 50px;
+		}
   }
 
-  &__content {
+  &__form {
     position: relative;
     height: 100%;
     max-width: 680px;
