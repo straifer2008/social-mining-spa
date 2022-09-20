@@ -3,7 +3,7 @@
     <div class="auth-layout__left" >
       <img class="logo" src="/img/Logo.svg" />
 			<div v-if="showIntro">
-				<h1>Welcome to Grand Time social mining platform!</h1>
+				<h1>{{ getHeaderText }}</h1>
 				<div class="desc">
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 				</div>
@@ -39,7 +39,13 @@ export default {
 			showIntro: true,
 		}
 	},
-
+	computed: {
+		getHeaderText() {
+		  return this.$route.fullPath === '/auth/register'
+				? 'Welcome to Grand Time social mining platform!'
+				: 'The best way to get data labeled and sone tasks for me!'
+		}
+	},
   mounted() {
     this.$nextTick(() => {
       window.addEventListener('resize', this.onResize);
@@ -56,7 +62,7 @@ export default {
     },
 		hideIntro() {
       this.showIntro = false
-		}
+		},
   }
 
 }

@@ -10,8 +10,7 @@
           type="email"
           ref="email"
           :rules="[rules.required, rules.email]"
-          :label="$t('resetPasswordForm.labelEmail')"
-          :placeholder="$t('resetPasswordForm.placeholderEmail')"
+          :label="$t('resetPasswordForm.placeholderEmail')"
           required
         />
       </div>
