@@ -3,14 +3,18 @@
     class="g-input"
     :class="{'currencySelect': currencySelect}"
   >
-    <label
-      v-if="label"
-      class="g-input--label col-form-label pt-0"
-      :class="{ required: required }"
-    >
-      {{ label }}
-    </label>
     <div class="g-input__wrap">
+      <label
+        v-if="label"
+        class="g-input--label col-form-label pt-0"
+        :class="{
+          required: required,
+          labelTop,
+          confirmationCode,
+        }"
+      >
+        {{ label }}
+      </label>
       <input
         v-model="inputValue"
         class="g-input--input "
@@ -18,14 +22,18 @@
           inputSizeClasses[size],
           {
             'have-right-actions': showBtnPassword,
-            'g-error': errorMsg || invalid
+            'g-error': errorMsg || invalid,
+            labelTop,
+            confirmationCode,
           }
         ]"
         :type="localInputType"
         :placeholder="placeholder"
         :readonly="readonly"
         :autocomplete="autocomplete"
+				:maxlength="confirmationCode ? 6 : 99"
         @blur="onBlur"
+        @focus="onFocus"
       />
       <div class="g-input__wrap--actions">
         <slot name="append">
@@ -138,7 +146,11 @@ export default {
       type: String,
       default: '',
       description: 'lg'
-    }
+    },
+    confirmationCode: {
+      type: Boolean,
+			default: false,
+		}
   },
   emits: ['update:modelValue'],
   data() {
@@ -149,7 +161,8 @@ export default {
       visibleInputType: 'text',
       inputSizeClasses: {
         lg: 'input-lg'
-      }
+      },
+      labelTop: false,
     }
   },
   computed: {
@@ -163,7 +176,7 @@ export default {
     },
     showBtnPassword() {
       return this.type === this.hiddenInputType
-    }
+    },
   },
   mounted() {
     this.changeType(this.type)
@@ -179,8 +192,12 @@ export default {
 
       this.localInputType = newType
     },
+    onFocus() {
+			this.labelTop = true
+    },
     onBlur() {
       this.checkErrorOnBluR()
+      this.labelTop = !!this.modelValue
     },
     checkErrorOnBluR() {
       if (this.errorHandlerOn === 'blur' && this.rules) {
@@ -197,6 +214,7 @@ export default {
       if (this.errorHandlerOn !== 'blur' && this.rules) {
         this.errorHandler()
       }
+      this.labelTop = !!this.modelValue
     }
   }
 }
@@ -209,9 +227,21 @@ export default {
   }
 
   label.col-form-label.g-input--label {
-    font-size: 14px;
     color: #999;
-    line-height: 1;
+    position: absolute;
+    top: 20px; left: 15px;
+    font-size: 17px;
+    line-height: 26px;
+		pointer-events: none;
+
+    &.labelTop {
+      top: 9px;
+      font-size: 12px;
+    }
+
+		&.confirmationCode {
+			display: none;
+		}
   }
   .g-input__wrap {
     input.form-control {
@@ -275,6 +305,30 @@ export default {
     border-radius: 8px;
     border: 1px solid #B5BBC6;
     padding: 20px 15px;
+
+		&.labelTop {
+			padding: 27px 15px 9px;
+		}
+
+		&.confirmationCode {
+			height: 122px;
+			padding: 40px 0 40px 40px;
+			font-size: 30px;
+			line-height: 42px;
+			font-weight: 500;
+			border: 0;
+			background: #EBECF04D;
+			text-align: center;
+			letter-spacing: 60px;
+			text-transform: full-width;
+			caret-color: transparent;
+
+			@media (max-width: 768px) {
+				letter-spacing: 10px;
+				text-indent: 5px;
+				padding-left: 0;
+			}
+		}
 
     &.have-right-actions {
       padding-right: 40px;

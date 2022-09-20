@@ -13,7 +13,8 @@
           v-model="form.code"
           ref="code"
           :rules="[rules.required]"
-          :placeholder="$t('authConfirmForm.placeholderCode')"
+          :label="$t('authConfirmForm.placeholderCode')"
+          confirmationCode
         />
       </div>
       <div class="form-group">

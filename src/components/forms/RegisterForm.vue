@@ -32,7 +32,7 @@
         <G-Input
           v-model="form.name"
           ref="name"
-          :placeholder="$t('registerForm.placeholderName')"
+          :label="$t('registerForm.placeholderName')"
           required
         />
       </div>
@@ -42,7 +42,7 @@
           ref="email"
           type="text"
           :rules="[rules.required, rules.email]"
-          :placeholder="$t('registerForm.placeholderEmail')"
+          :label="$t('registerForm.placeholderEmail')"
           required
         />
       </div>
@@ -59,7 +59,7 @@
             rules.containsUpperCase,
             rules.containsLowerCase
           ]"
-          :placeholder="$t('registerForm.placeholderPassword')"
+          :label="$t('registerForm.placeholderPassword')"
           required
         />
       </div>
@@ -69,7 +69,7 @@
           type="password"
           ref="passwordRepeat"
           :rules="[rules.required, rules.mismatch]"
-          :placeholder="$t('registerForm.placeholderPasswordRepeat')"
+          :label="$t('registerForm.placeholderPasswordRepeat')"
           required
         />
       </div>
@@ -77,7 +77,7 @@
         <G-Input
           v-model="form.companyName"
           ref="companyName"
-          :placeholder="$t('registerForm.placeholderCompanyName')"
+          :label="$t('registerForm.placeholderCompanyName')"
           required
         />
       </div>

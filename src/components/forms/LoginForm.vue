@@ -10,7 +10,7 @@
           type="email"
           ref="email"
           :rules="[rules.required, rules.email]"
-          :placeholder="$t('loginForm.placeholderEmail')"
+          :label="$t('loginForm.placeholderEmail')"
           required
         />
       </div>
@@ -20,7 +20,7 @@
           type="password"
           ref="password"
           :rules="[rules.required]"
-          :placeholder="$t('loginForm.placeholderPassword')"
+          :label="$t('loginForm.placeholderPassword')"
           required
         />
       </div>
