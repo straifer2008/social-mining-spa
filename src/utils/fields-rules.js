@@ -56,7 +56,16 @@ const apiFieldsErrorHandler = ({ errors, refs }) => {
 // RULES RULES RULES RULES RULES
 const required = (v, message) => !!v || message || $t('rules.required')
 
-const email = (v, message) => /.+@.+/.test(v) || message || $t('rules.email')
+// example
+const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+
+// Unicode accepted --- [^<>()[\]\.,;:\s@\"]
+const emailRegex2 = /^[^<>()[\]\.,;:\s@\"]+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+
+// Unicode NOT accepted --- \w
+const emailRegex3 = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+
+const email = (v, message) => emailRegex3.test(v) || message || $t('rules.email')
 
 const min = (v, min, message) => v.length >= min || message || $t('rules.min', { min })
 
