@@ -74,7 +74,7 @@ export default {
   display: flex;
   justify-content: space-between;
   background: url('/img/Background.svg');
-  background-size: cover;
+  /*background-size: cover;*/
   padding: 30px 198px 30px 80px;
 
   @media (max-width: 1400px) {
