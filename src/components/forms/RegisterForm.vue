@@ -32,6 +32,7 @@
         <G-Input
           v-model="form.name"
           ref="name"
+          :rules="[rules.min4, rules.max20]"
           :label="$t('registerForm.placeholderName')"
           required
         />
@@ -53,7 +54,8 @@
           ref="password"
           :rules="[
             rules.required,
-            rules.minLength,
+            rules.min6,
+            rules.max40,
             rules.containsNumber,
             rules.containsSymbol,
             rules.containsUpperCase,
@@ -77,6 +79,7 @@
         <G-Input
           v-model="form.companyName"
           ref="companyName"
+          :rules="[rules.min2, rules.max20]"
           :label="$t('registerForm.placeholderCompanyName')"
           required
         />
@@ -173,7 +176,8 @@ import UserMiniCard from '@/views/auth/register/components/UserMiniCard.vue'
 import {
   required,
   email,
-  minLength,
+  min,
+  max,
   mismatch,
   dateInRange,
   containsNumber,
@@ -218,7 +222,12 @@ export default {
         containsSymbol,
         containsUpperCase,
         containsLowerCase,
-        minLength: (v) => minLength(v, 8),
+        min2: (v) => min(v, 2),
+        min4: (v) => min(v, 4),
+        min6: (v) => min(v, 6),
+        min8: (v) => min(v, 8),
+        max20: (v) => max(v, 20),
+        max40: (v) => max(v, 40),
         mismatch: (v) => mismatch(v, this.form.password, 'password'),
         dateInRange: (v) => {
           const minAge = 18

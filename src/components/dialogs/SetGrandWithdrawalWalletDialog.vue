@@ -32,7 +32,7 @@
             v-model="form.address"
             :readonly="!canChangeAddress"
             ref="address"
-            :rules="[rules.required, rules.minLength]"
+            :rules="[rules.required, rules.min42]"
             :label="$t('setGrandWithdrawalWalletDialog.addressLabel')"
             :placeholder="
               $t('setGrandWithdrawalWalletDialog.addressPlaceholder')
@@ -171,7 +171,7 @@ import WalletConnectButton from '@/components/WalletConnectButton.vue'
 import { copyToClipboard } from '@/utils/utils.js'
 import {
   required,
-  minLength,
+  min,
   mismatch,
   isThisRefsValid
 } from '@/utils/fields-rules.js'
@@ -194,7 +194,7 @@ export default {
       grandTokenAddress: import.meta.env.VITE_GRAND_TOKEN_ADDRESS,
       rules: {
         required,
-        minLength: (v) => minLength(v, 42),
+        min42: (v) => min(v, 42),
         mismatch: (v) => mismatch(v, this.form.address, 'address')
       }
     }

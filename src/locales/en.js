@@ -2,8 +2,8 @@ export default {
   rules: {
     required: 'Required field',
     email: 'Must be a valid email address',
-    min: 'min. { min }',
-    max: 'max. { max }',
+    min: 'minimal length is { min }',
+    max: 'maximum length is { max }',
     pswMinLength: 'min. characters { minLength }',
     pswMismatch: 'must match the { fieldName } field',
     dateIsFew: 'invalid date',

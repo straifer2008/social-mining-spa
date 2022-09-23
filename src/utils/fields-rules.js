@@ -58,12 +58,9 @@ const required = (v, message) => !!v || message || $t('rules.required')
 
 const email = (v, message) => /.+@.+/.test(v) || message || $t('rules.email')
 
-const minLength = (v, minLength, message) =>
-  v.length >= minLength || message || $t('rules.pswMinLength', { minLength })
+const min = (v, min, message) => v.length >= min || message || $t('rules.min', { min })
 
-const min = (v, min, message) => v >= min || message || $t('rules.min', { min })
-
-const max = (v, max, message) => v <= max || message || $t('rules.max', { max })
+const max = (v, max, message) => v.length <= max || message || $t('rules.max', { max })
 
 const mismatch = (value1, value2, fieldName, message) =>
   value1 === value2 || message || $t('rules.pswMismatch', { fieldName })
@@ -93,7 +90,6 @@ export {
   email,
   min,
   max,
-  minLength,
   mismatch,
   dateInRange,
   containsNumber,
