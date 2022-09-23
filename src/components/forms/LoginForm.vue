@@ -141,6 +141,8 @@ export default {
 
 <style lang="scss">
   .login-form {
+    margin-top: 60px;
+
     .btn-forgot {
       width: fit-content;
     }

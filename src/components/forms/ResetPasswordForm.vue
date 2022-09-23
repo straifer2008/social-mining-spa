@@ -83,5 +83,6 @@ export default {
 
 <style lang="scss">
 .reset-password-form {
+  margin-top: 120px;
 }
 </style>

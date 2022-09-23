@@ -2,8 +2,8 @@ export default {
   rules: {
     required: 'обязательное поле',
     email: 'Must be a valid email address',
-    min: 'мин. { min }',
-    max: 'макс. { max }',
+    min: 'минимальное число символов { min }',
+    max: 'максимальное число символов { max }',
     pswMinLength: 'мин. количество символов { minLength }',
     pswMismatch: 'должно совпадать с полем { fieldName }',
     dateIsFew: 'некорректная дата',
