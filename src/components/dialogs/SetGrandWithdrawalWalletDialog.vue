@@ -168,13 +168,13 @@
 import GModal from '@/components/ui-elements/GModal.vue'
 import CardActionsCompleted from '@/components/cards/CardActionsСompleted.vue'
 import WalletConnectButton from '@/components/WalletConnectButton.vue'
-import { copyToClipboard } from '@/utils/utils.js'
+import { copyToClipboard } from '@/utils/utils.ts'
 import {
   required,
   min,
   mismatch,
   isThisRefsValid
-} from '@/utils/fields-rules.js'
+} from '@/utils/fields-rules.ts'
 
 export default {
   name: 'SetGrandWithdrawalWalletDialog',

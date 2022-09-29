@@ -9,7 +9,7 @@ import { LaunchpadApiService } from './LaunchpadApiService'
 import { BlogsApiService } from './BlogsApiService'
 
 
-export const $api = (app) => {
+export const $api = (app: any) => {
   return {
     auth: new AuthApiService({ app }),
     location: new LocationApiService({ app }),

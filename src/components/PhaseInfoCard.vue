@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { totalRaisedUsdCalculate } from "@/services/launchpad/index.js";
+import { totalRaisedUsdCalculate } from "@/services/launchpad/index.ts";
 import { mapGetters } from "vuex";
 
 export default {

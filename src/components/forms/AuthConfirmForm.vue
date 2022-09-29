@@ -42,7 +42,7 @@
 
 <script>
 import AuthFormCard from '@/components/forms/AuthFormCard.vue'
-import { required, isThisRefsValid } from '@/utils/fields-rules.js'
+import { required, isThisRefsValid } from '@/utils/fields-rules.ts'
 
 export default {
   name: 'AuthConfirmForm',

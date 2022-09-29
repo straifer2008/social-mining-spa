@@ -11,9 +11,10 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import ConfirmPopup from 'primevue/confirmpopup'
 import Message from 'primevue/message'
+import { App } from 'vue'
 
 export default {
-  async install(app) {
+  async install(app: App) {
     app.use(PrimeVue, { ripple: true })
 
     app.use(ConfirmationService)

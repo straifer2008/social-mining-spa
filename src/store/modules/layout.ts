@@ -1,5 +1,5 @@
 import Layout from '../../data/layout'
-// import { store } from '@/store/index.js'
+// import { store } from '@/store/index.ts'
 
 export default {
   state: () => ({

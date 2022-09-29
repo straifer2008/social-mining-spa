@@ -1,4 +1,5 @@
 import ToastService from 'primevue/toastservice'
+import { App } from 'vue'
 
 const noticeType = {
   success: 'success',
@@ -27,7 +28,7 @@ const defaultValues = {
 }
 
 export default {
-  install(app) {
+  install(app: App) {
     app.use(ToastService)
 
     // eslint-disable-next-line prettier/prettier

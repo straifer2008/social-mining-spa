@@ -78,7 +78,7 @@
 <script>
 import AuthFormCard from '@/components/forms/AuthFormCard.vue'
 import GRecaptcha from '@/components/GRecaptcha.vue'
-import { required, email, isThisRefsValid } from '@/utils/fields-rules.js'
+import { required, email, isThisRefsValid } from '@/utils/fields-rules.ts'
 
 export default {
   name: 'LoginForm',

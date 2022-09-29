@@ -5,8 +5,8 @@ import App from './App.vue'
 import router from './router'
 import i18n from './plugins/i18n.plugin'
 
-import toastPlugin from '@/plugins/toast.plugin.js'
-import apiPlugin from '@/plugins/api.plugin.js'
+import toastPlugin from '@/plugins/toast.plugin.ts'
+import apiPlugin from '@/plugins/api.plugin.ts'
 
 import BreadCrumbs from '@/components/ui-elements/BreadCrumbs.vue'
 import VueFeather from 'vue-feather'
@@ -14,7 +14,7 @@ import VueFeather from 'vue-feather'
 import registerPrimeVueComponents from '@/plugins/primevue-components'
 import registerGlobalComponents from '@/plugins/global-components'
 
-import tooltipDirective from '@/directives/tooltip.directive.js'
+import tooltipDirective from '@/directives/tooltip.directive.ts'
 
 // Import Theme scss
 import '@/assets/scss/app.scss'

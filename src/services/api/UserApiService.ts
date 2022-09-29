@@ -1,5 +1,5 @@
 import { BaseApiService } from './core/BaseApiService'
-import { defaultProfileConfig } from '@/services/api/configs/profile.js'
+import { defaultProfileConfig } from '@/services/api/configs/profile.ts'
 
 const checkAuth = true
 

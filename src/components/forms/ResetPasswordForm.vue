@@ -32,7 +32,7 @@
 
 <script>
 import AuthFormCard from '@/components/forms/AuthFormCard.vue'
-import { required, email, isThisRefsValid } from '@/utils/fields-rules.js'
+import { required, email, isThisRefsValid } from '@/utils/fields-rules.ts'
 
 export default {
   name: 'ResetPasswordForm',

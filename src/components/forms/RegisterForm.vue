@@ -186,7 +186,7 @@ import {
   containsLowerCase,
   isThisRefsValid,
   apiFieldsErrorHandler
-} from '@/utils/fields-rules.js'
+} from '@/utils/fields-rules.ts'
 import GRecaptcha from '@/components/GRecaptcha.vue'
 
 export default {

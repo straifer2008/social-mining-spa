@@ -112,7 +112,7 @@ import {
   max,
   isThisRefsValid,
   apiFieldsErrorHandler
-} from '@/utils/fields-rules.js'
+} from '@/utils/fields-rules.ts'
 import CardActionsCompleted from '@/components/cards/CardActionsСompleted.vue'
 
 export default {

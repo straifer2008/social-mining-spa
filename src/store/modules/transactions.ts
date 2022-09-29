@@ -1,6 +1,6 @@
-import { store } from '@/store/index.js'
+import { store } from '@/store/index.ts'
 
-import i18n from '@/plugins/i18n.plugin.js'
+import i18n from '@/plugins/i18n.plugin.ts'
 const {
   global: { t: $t }
 } = i18n

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { handleErrors } from '@/services/api/core/handleErrors.js'
+import { handleErrors } from '@/services/api/core/handleErrors.ts'
 
 export class BaseApiService {
   baseUrl

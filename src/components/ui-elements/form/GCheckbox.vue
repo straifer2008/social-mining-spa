@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { fieldErrorHandler } from '@/utils/fields-rules.js'
+import { fieldErrorHandler } from '@/utils/fields-rules.ts'
 
 export default {
   name: 'GCheckbox',

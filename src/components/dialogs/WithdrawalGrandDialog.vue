@@ -91,7 +91,7 @@
 import GModal from '@/components/ui-elements/GModal.vue'
 
 import { mapGetters } from 'vuex'
-import { required, min, max, isThisRefsValid } from '@/utils/fields-rules.js'
+import { required, min, max, isThisRefsValid } from '@/utils/fields-rules.ts'
 import CardActionsCompleted from '@/components/cards/CardActionsСompleted.vue'
 
 export default {

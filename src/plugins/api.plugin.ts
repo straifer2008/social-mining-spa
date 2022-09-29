@@ -1,7 +1,9 @@
-import { $api } from '@/services/api/api.js'
+import { $api } from '@/services/api/api.ts'
+import { App } from 'vue'
+
 
 export default {
-  install(app) {
+  install(app: App) {
     app.config.globalProperties.$api = app.config.globalProperties.$store.$api =
       $api(app.config.globalProperties)
   }
