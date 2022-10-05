@@ -4,6 +4,8 @@ import { store } from './store/index'
 import App from './App.vue'
 import router from './router'
 import i18n from './plugins/i18n.plugin'
+import http from './utils/http'
+import auth from './plugins/auth'
 
 import toastPlugin from '@/plugins/toast.plugin.ts'
 import apiPlugin from '@/plugins/api.plugin.ts'
@@ -28,9 +30,11 @@ app.use(registerGlobalComponents)
 app.component('BreadCrumbs', BreadCrumbs)
 app.component(VueFeather.name, VueFeather)
 
+app.use(http)
 app.use(i18n)
 app.use(store)
 app.use(router)
+app.use(auth)
 app.use(toastPlugin)
 app.use(apiPlugin)
 

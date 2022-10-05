@@ -8,7 +8,6 @@ import CreateNewView from '@/views/app/MyTasks/CreateNewView.vue'
 import MyProfileView from '@/views/app/MyProfile/MyProfileView.vue'
 import KnowledgeHelpView from '@/views/app/KnowledgeHelp/KnowledgeHelpView.vue'
 
-
 // middleware
 import guest from './middleware/guest'
 import auth from './middleware/auth'
@@ -31,63 +30,71 @@ const router = createRouter({
           path: '/auth/login',
           name: 'Login',
           component: () => import('@/views/auth/LoginView.vue'),
-          meta: { middleware: [guest] }
+          meta: { auth: false }
         },
         {
           path: '/auth/register/:code?',
           props: true,
           name: 'Registration',
           component: () => import('@/views/auth/register/RegisterView.vue'),
-          meta: { middleware: [guest] }
+          meta: { auth: false }
         },
         {
           path: '/auth/reset-password',
           name: 'Reset password',
           component: () => import('@/views/auth/ResetPasswordView.vue'),
-          meta: { middleware: [guest] }
+          meta: { auth: false }
         },
         {
           path: '/auth/auth-confirm/:token',
           props: true,
           name: 'Auth Confirm',
           component: () => import('@/views/auth/AuthConfirmView.vue'),
-          meta: { middleware: [guest] }
+          meta: { auth: false }
         }
       ]
     },
     {
       path: '/',
       component: AppLayout,
+      meta: { auth: true },
       children: [
         {
           path: '/',
           name: 'MyTasks',
           component: MyTasksView,
-          meta: { middleware: [auth] }
+          meta: {
+            auth: true
+            //   auth: {
+            //     roles: 'admin',
+            //     redirect: '/admin/login',
+            //     notFoundRedirect: {name: 'error-404'},
+            //     forbiddenRedirect: '/admin/403'
+          }
         },
         {
           path: 'create-new',
           name: 'CreateNew',
           component: CreateNewView,
-          meta: { middleware: [auth] }
+          meta: { auth: true }
         },
         {
           path: 'my-tasks',
           name: 'MyTasks',
           component: MyTasksView,
-          meta: { middleware: [auth] }
+          meta: { auth: true }
         },
         {
           path: 'my-profile',
           name: 'MyProfile',
           component: MyProfileView,
-          meta: { middleware: [auth] }
+          meta: { auth: true }
         },
         {
           path: 'knowledge-help',
           name: 'KnowledgeHelp',
           component: KnowledgeHelpView,
-          meta: { middleware: [auth] }
+          meta: { auth: true }
         },
         {
           path: 'default',
@@ -95,9 +102,9 @@ const router = createRouter({
           component: SamplePage,
           meta: {
             title: 'Default Dashboard | Endless - Premium Admin Template',
-            middleware: [auth]
+            auth: true
           }
-        },
+        }
       ]
     },
     {
@@ -108,21 +115,26 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach((to, from, next) => {
-  if (!to.meta.middleware) {
-    return next()
-  }
-  const middleware = to.meta.middleware
-  const context = {
-    to,
-    from,
-    next,
-    store
-  }
-  return middleware[0]({
-    ...context,
-    nextMiddleware: middlewarePipeline(context, middleware, 1)
-  })
-})
+// router.beforeEach((to, from, next) => {
+//   if (!to.meta.middleware) {
+//     return next()
+//   }
+//   const middleware = to.meta.middleware
+//   const context = {
+//     to,
+//     from,
+//     next,
+//     store
+//   }
+//   return middleware[0]({
+//     ...context,
+//     nextMiddleware: middlewarePipeline(context, middleware, 1)
+//   })
+// })
 
-export default router
+export default (app: any) => {
+  app.router = router
+
+  app.use(router)
+}
+// export default router

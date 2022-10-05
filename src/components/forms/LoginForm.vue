@@ -70,140 +70,153 @@
           </div>
         </router-link>
       </div>
-
     </form>
   </AuthFormCard>
 </template>
 
-<script>
+<script lang="ts" setup>
 import AuthFormCard from '@/components/forms/AuthFormCard.vue'
 import GRecaptcha from '@/components/GRecaptcha.vue'
 import { required, email, isThisRefsValid } from '@/utils/fields-rules.ts'
+import { useAuth } from '@websanova/vue-auth/src/v3.js'
+import { ref, reactive, getCurrentInstance } from 'vue'
 
-export default {
-  name: 'LoginForm',
-  components: {
-    AuthFormCard,
-    GRecaptcha
-  },
-  data() {
-    return {
-      formKey: 0,
-      loading: false,
-      form: {
-        email: '',
-        password: '',
-        'g-recaptcha-response': '',
-        type: 'email'
-      },
-      rules: {
-        required,
-        email
-      }
-    }
-  },
-  methods: {
-    async onSubmit() {
-      const valid = isThisRefsValid(this.$refs)
-      if (valid) {
-        this.loading = true
-        try {
-          const { data } = await this.$api.auth.login(this.form)
-          const email = this.form.email
-          const confirmUrlToken = this.getConfirmUrlToken(data.url)
-          this.resetForm()
-          this.$router.push({
-            name: 'Auth Confirm',
-            params: { token: confirmUrlToken, email }
-          })
-        } catch (err) {
-          console.log(err)
-          this.$refs.recaptcha.reset()
-        } finally {
-          this.loading = false
-        }
-      }
-    },
-    getConfirmUrlToken(url) {
-      const newUrl = new URL(url)
-      const urlToken = newUrl.pathname.split('/')
-      return urlToken.at(-1)
-    },
-    resetForm() {
-      this.form.email = ''
-      this.form.password = ''
-      this.form['g-recaptcha-response'] = ''
-      this.formKey += 1
+const _this = getCurrentInstance()
+
+const auth = useAuth()
+const formKey = ref(0)
+const loading = ref(false)
+const form = reactive({
+  email: '',
+  password: '',
+  'g-recaptcha-response': '',
+  type: 'email',
+  deviceHash: 'asdasda'
+})
+
+const rules = ref({
+  required,
+  email
+})
+
+const onSubmit = async () => {
+  const valid = isThisRefsValid(_this?.refs)
+  if (valid) {
+    loading.value = true
+    try {
+      console.log(auth)
+      const { data } = await auth.login({
+        data: form,
+        remember: true,
+        fetchUser: true,
+        // staySignedIn: state.form.staySignedIn,
+        redirect: '/'
+      })
+      console.log(data)
+      // const email = form.email
+      // const confirmUrlToken = this.getConfirmUrlToken(data.url)
+      // this.resetForm()
+      // this.$router.push({
+      //   name: 'Auth Confirm',
+      //   params: { token: confirmUrlToken, email }
+      // })
+    } catch (err: any) {
+      const {response} = err
+      console.log(response)
+      // this.$refs.recaptcha.reset()
+    } finally {
+      loading.value = false
     }
   }
 }
+const getConfirmUrlToken = (url: string) => {
+  const newUrl = new URL(url)
+  const urlToken = newUrl.pathname.split('/')
+  return urlToken.at(-1)
+}
+const resetForm = () => {
+  form.email = ''
+  form.password = ''
+  form['g-recaptcha-response'] = ''
+  formKey.value += 1
+}
+
+// export default {
+//   name: 'LoginForm',
+//   components: {
+//     AuthFormCard,
+//     GRecaptcha
+//   },
+//   methods: {
+
+//   }
+// }
 </script>
 
 <style lang="scss">
-  .login-form {
-    margin-top: 60px;
+.login-form {
+  margin-top: 60px;
 
-    .btn-forgot {
-      width: fit-content;
-    }
+  .btn-forgot {
+    width: fit-content;
   }
+}
 
-  .divider {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+.divider {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
 
-    .hr {
-      width: 100%;
-      border: 1px solid #EBECF0;
-    }
-
-    span {
-      font-size: 14px;
-      margin: 0 31px;
-      text-align: center;
-      white-space: nowrap;
-    }
-  }
-
-  .signup {
-    height: 65px;
-    border: 1px solid #B5BBC6;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    cursor: pointer;
+  .hr {
     width: 100%;
-
-    &.main {
-      border-color: black;
-      width: 140px;
-    }
+    border: 1px solid #ebecf0;
   }
 
+  span {
+    font-size: 14px;
+    margin: 0 31px;
+    text-align: center;
+    white-space: nowrap;
+  }
+}
+
+.signup {
+  height: 65px;
+  border: 1px solid #b5bbc6;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  cursor: pointer;
+  width: 100%;
+
+  &.main {
+    border-color: black;
+    width: 140px;
+  }
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin: 20px 0;
+
+  a {
+    text-decoration: none;
+  }
+
+  &.signup-button {
+    margin-top: 40px;
+    margin-bottom: 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
   .flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    margin: 20px 0;
-
-    a {
-      text-decoration: none;
-    }
-
-    &.signup-button {
-      margin-top: 40px;
-      margin-bottom: 0;
-    }
+    flex-direction: column;
   }
-
-  @media screen and (max-width: 768px) {
-    .flex {
-      flex-direction: column;
-    }
-  }
-
+}
 </style>
