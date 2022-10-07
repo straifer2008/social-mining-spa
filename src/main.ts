@@ -6,6 +6,7 @@ import router from './router'
 import i18n from './plugins/i18n.plugin'
 import http from './utils/http'
 import auth from './plugins/auth'
+import firebase from './plugins/firebase'
 
 import toastPlugin from '@/plugins/toast.plugin.ts'
 import apiPlugin from '@/plugins/api.plugin.ts'
@@ -37,5 +38,6 @@ app.use(router)
 app.use(auth)
 app.use(toastPlugin)
 app.use(apiPlugin)
+app.use(firebase)
 
 app.mount('#app')
