@@ -46,13 +46,13 @@
         <div class="hr"></div>
       </div>
 
-      <div class="signup">
+      <div class="signup" @click="oauth2Default('google')">
         <img src="/img/icons/google-icon.svg" />
         Sign up with Google
       </div>
 
       <div class="flex">
-        <div class="signup">
+        <div class="signup" @click="oauth2Default('facebook')">
           <img src="/img/icons/facebook-icon.svg" />
           Sign up with Facebook
         </div>
@@ -75,14 +75,19 @@
 </template>
 
 <script lang="ts" setup>
+//@ts-nocheck
 import AuthFormCard from '@/components/forms/AuthFormCard.vue'
 import GRecaptcha from '@/components/GRecaptcha.vue'
+import { useRoute } from 'vue-router'
 import { required, email, isThisRefsValid } from '@/utils/fields-rules.ts'
 import { useAuth } from '@websanova/vue-auth/src/v3.js'
-import { ref, reactive, getCurrentInstance } from 'vue'
+import { ref, reactive, getCurrentInstance, onMounted, watch } from 'vue'
+import { useStore } from 'vuex'
 
 const _this = getCurrentInstance()
-
+const store = useStore()
+const { device_hash } = store.state.app
+const route = useRoute()
 const auth = useAuth()
 const formKey = ref(0)
 const loading = ref(false)
@@ -91,7 +96,21 @@ const form = reactive({
   password: '',
   'g-recaptcha-response': '',
   type: 'email',
-  deviceHash: 'asdasda'
+  deviceHash: device_hash
+})
+
+const oauthForm = reactive({
+  form: {
+    body: {},
+    code: false,
+    params: {
+      // state: {
+      //   remember: true,
+      //   staySignedIn: true,
+      //   fetchUser: true
+      // }
+    }
+  }
 })
 
 const rules = ref({
@@ -104,7 +123,6 @@ const onSubmit = async () => {
   if (valid) {
     loading.value = true
     try {
-      console.log(auth)
       const { data } = await auth.login({
         data: form,
         remember: true,
@@ -121,8 +139,8 @@ const onSubmit = async () => {
       //   params: { token: confirmUrlToken, email }
       // })
     } catch (err: any) {
-      const {response} = err
-      console.log(response)
+      const { response } = err
+      console.log(err)
       // this.$refs.recaptcha.reset()
     } finally {
       loading.value = false
@@ -139,6 +157,32 @@ const resetForm = () => {
   form.password = ''
   form['g-recaptcha-response'] = ''
   formKey.value += 1
+}
+
+const reset = () => {
+  delete oauthForm.form.url
+  delete oauthForm.form.state
+  oauthForm.form.body = {}
+  oauthForm.form.code = route.query.code ? true : false
+  if (oauthForm.form.code) {
+    oauthForm.form.url = `auth/${route.query.type}`
+    oauthForm.form.state = route.query.state
+    oauthForm.form.body.code = route.query.code
+  }
+}
+
+watch(() => {
+  return route.params.type
+}, reset)
+
+onMounted(() => {
+  reset()
+  if (oauthForm.form.code) {
+    oauth2Default(route.params.type)
+  }
+})
+const oauth2Default = (type) => {
+  auth.oauth2(type, oauthForm.form)
 }
 
 // export default {

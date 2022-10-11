@@ -9,9 +9,6 @@ import MyProfileView from '@/views/app/MyProfile/MyProfileView.vue'
 import KnowledgeHelpView from '@/views/app/KnowledgeHelp/KnowledgeHelpView.vue'
 
 // middleware
-import guest from './middleware/guest'
-import auth from './middleware/auth'
-import local from './middleware/local'
 import middlewarePipeline from './middleware/middlewarePipeline'
 
 /* sample page */
@@ -115,22 +112,22 @@ const router = createRouter({
   ]
 })
 
-// router.beforeEach((to, from, next) => {
-//   if (!to.meta.middleware) {
-//     return next()
-//   }
-//   const middleware = to.meta.middleware
-//   const context = {
-//     to,
-//     from,
-//     next,
-//     store
-//   }
-//   return middleware[0]({
-//     ...context,
-//     nextMiddleware: middlewarePipeline(context, middleware, 1)
-//   })
-// })
+router.beforeEach((to, from, next) => {
+  if (!to.meta.middleware) {
+    return next()
+  }
+  const middleware = to.meta.middleware
+  const context = {
+    to,
+    from,
+    next,
+    store
+  }
+  return middleware[0]({
+    ...context,
+    nextMiddleware: middlewarePipeline(context, middleware, 1)
+  })
+})
 
 export default (app: any) => {
   app.router = router
