@@ -14,7 +14,6 @@
     "containsLowerCase": "field must contain lowercase characters"
   },
   "loginForm": {
-    "signup": "Sign up",
     "signin": "Sign in",
     "title": "Hey there!",
     "submit": "Sign in",
@@ -24,6 +23,9 @@
     "placeholderPassword": "Password",
     "btnForgot": "Forgot a password?",
     "Or_use_services": "Or use services",
+    "Sig_up_with_Wallet": "Sign up with Wallet",
+    "Sign_up_with_Google": "Sign up with Google",
+    "Sign_up_with_Facebook":"Sign up with Facebook",
     "registerLink": {
       "text1": "Don't have an account?",
       "text2": "Sign up"

@@ -8,9 +8,9 @@ type AuthButtonProps = {
   icon?: string;
   children?: ReactNode;
 };
-export const AuthButton: FC<AuthButtonProps> = ({onClick, icon, children}) => {
+export const AuthButton: FC<AuthButtonProps> = ({ onClick, icon, children, ...props }) => {
   return (
-    <Button variant="outlined" onClick={onClick} fullWidth>
+    <Button variant="outlined" onClick={onClick} fullWidth {...props}>
       {icon && <Icon src={icon} alt="auth-icon" />}
       {children}
     </Button>

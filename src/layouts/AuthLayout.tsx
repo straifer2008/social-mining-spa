@@ -2,11 +2,11 @@
 import { FC } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectAuthenticationState } from "../store/auth";
-import ROUTES from "../router/routes";
-import Logo from '../assets/images/Logo.svg';
-import './AuthLayout.scss';
+import { selectAuthenticationState } from "store/auth";
+import ROUTES from "router/routes";
+import Logo from 'assets/images/Logo.svg';
 import { Card } from 'shared';
+import './AuthLayout.scss';
 
 type AuthLayoutProps = {};
 export const AuthLayout: FC<AuthLayoutProps> = () => {
@@ -20,9 +20,6 @@ export const AuthLayout: FC<AuthLayoutProps> = () => {
 		<div className="auth-layout">
 			<div className="auth-layout__left">
 				<img className="logo" src={Logo}  alt="logo" />
-        <div>
-          <h1>Welcome to Grand Time social mining platform!</h1>
-        </div>
 			</div>
 			<div className="auth-layout__form">
 				<Card>

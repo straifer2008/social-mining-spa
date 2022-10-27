@@ -105,15 +105,4 @@
       display: block;
     }
   }
-
-  .view-fade-enter-active,
-  .view-fade-leave-active {
-    transition: transform 0.3s 0.2s ease-out;
-  }
-
-  .view-fade-enter-from,
-  .view-fade-leave-to {
-    // filter: blur(5px);
-    transform: rotateY(90deg);
-  }
 }

@@ -31,6 +31,7 @@ export type ErrorResponse = {
 export type FormConfigItem<T> = {
 	readonly name: T,
 	readonly label: string
+	readonly placeholder?: string
 	readonly type?: InputTypes
 	readonly elementType?: ElementTypes,
 	readonly options?: Option<string | number>[],

@@ -7,7 +7,7 @@ export function emailSchema() {
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function passwordSchema() {
-  return yup.string().required('Password is required');
+  return yup.string().min(6).required('Password is required');
 }
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function stringReqSchema(message: string) {
