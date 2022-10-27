@@ -1,0 +1,46 @@
+{
+  "name": "vue-project",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 5050",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+  },
+  "dependencies": {
+    "@rollup/plugin-inject": "^4.0.4",
+    "@walletconnect/client": "^1.7.8",
+    "@walletconnect/qrcode-modal": "^1.7.8",
+    "@websanova/vue-auth": "^4.1.13",
+    "axios": "^0.27.2",
+    "feather-icons": "^4.29.0",
+    "firebase": "^9.10.0",
+    "node-sass": "^7.0.1",
+    "primeicons": "^5.0.0",
+    "primevue": "^3.12.4",
+    "sass": "^1.49.11",
+    "typescript": "^4.8.3",
+    "vue": "^3.2.31",
+    "vue-feather": "^2.0.0",
+    "vue-i18n": "9",
+    "vue-router": "^4.0.14",
+    "vue-tsc": "^0.40.13",
+    "vue3-recaptcha2": "^1.4.0",
+    "vuefire": "^2.2.5",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@rushstack/eslint-patch": "^1.1.0",
+    "@types/node": "^18.7.23",
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@typescript-eslint/parser": "^5.38.1",
+    "@vitejs/plugin-vue": "^2.3.1",
+    "@vue/cli-plugin-typescript": "~5.0.0",
+    "@vue/eslint-config-prettier": "^7.0.0",
+    "@vue/eslint-config-typescript": "^11.0.2",
+    "eslint": "^8.5.0",
+    "eslint-plugin-vue": "^8.2.0",
+    "prettier": "^2.5.1",
+    "vite": "^2.9.1"
+  }
+}
