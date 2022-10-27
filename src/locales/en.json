@@ -36,6 +36,8 @@
     "placeholderName": "First name",
     "placeholderLastName": "Last name",
     "labelEmail": "Email",
+    "customer": "I need tasks done for me",
+    "executor": "I want to do tasks and earn crypto",
     "placeholderEmail": "Your email address",
     "labelPassword": "Password",
     "placeholderPassword": "Pick a password",

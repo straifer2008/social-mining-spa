@@ -8,9 +8,18 @@ export type LoginFormValues = {
 }
 
 export type RegisterValues = {
-	email: string,
-	firstName: string,
-	lastName: string,
+	role: string;
+	firstName: string;
+	lastName: string;
+	email: string;
+	password: string;
+	passwordConfirm: string;
+	gender?: any;
+	birthDate?: string;
+	countryId?: string;
+	companyName?: string;
+	companyProfile?: string;
+	companyStaffQuantity?: number;
 }
 
 export type AuthState = {
