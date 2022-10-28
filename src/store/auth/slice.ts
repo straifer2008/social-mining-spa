@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  AuthState,
-} from '../../types';
+import { AuthState } from 'types';
+import { getTokenFromStorage } from 'utils';
 
 const INITIAL_STATE: AuthState = {
-  isAuthenticated: false,
+  isAuthenticated: !!getTokenFromStorage(),
 };
 
 const slice = createSlice({

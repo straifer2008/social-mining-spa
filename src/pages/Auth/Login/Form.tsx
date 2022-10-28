@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Checkbox, FormControlLabel, Grid, Stack, Typography } from '@mui/material';
 import { Input } from 'shared';
 import { useLoginMutation } from 'services';
-import { useServerError, useSetTokenToStorage } from 'hooks';
+import { useServerError } from 'hooks';
 import { FormConfigItem, InputTypes, LoginFormValues } from "types";
 import rules from './rules';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +13,8 @@ import GoogleImg from 'assets/images/icons/google-icon.svg';
 import FacebookImg from 'assets/images/icons/facebook-icon.svg';
 import { AuthButton, AuthDivider } from '../components';
 import ROUTES from 'router/routes';
+import { changeAuthenticationState } from 'store/auth/slice';
+import { useDispatch } from 'react-redux';
 
 const CONFIG: readonly FormConfigItem<'email' | 'password'>[] = [{
 	name: 'email',
@@ -28,6 +30,7 @@ const CONFIG: readonly FormConfigItem<'email' | 'password'>[] = [{
 	}] as const;
 
 export const Form: React.FC = (): JSX.Element => {
+	const dispatch = useDispatch();
   const { t } = useTranslation();
   const form = useForm<LoginFormValues>({
     resolver: yupResolver(rules),
@@ -43,13 +46,13 @@ export const Form: React.FC = (): JSX.Element => {
     control,
   } = form;
 
-  const [login, { data: result, isError, error: serverError }] = useLoginMutation();
+  const [login, { data: loginData, isError, error: serverError }] = useLoginMutation();
 
   const onSubmit = (data: LoginFormValues) => login(data);
 
-  useSetTokenToStorage({ result });
-
   useServerError({ isError, error: serverError });
+
+	if (loginData && !isError) dispatch(changeAuthenticationState(true));
 
   return (
 		<>

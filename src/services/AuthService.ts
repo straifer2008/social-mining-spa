@@ -6,7 +6,7 @@ import {
 	RegisterCustomerValues,
 	RegisterExecutorValues
 } from 'types';
-import { prepareHeaders } from 'utils';
+import { prepareHeaders, setTokenToStorage } from 'utils';
 import { API_ROUTES } from 'router/api.routes';
 
 export const authAPI = createApi({
@@ -22,6 +22,12 @@ export const authAPI = createApi({
 				method: 'POST',
 				body,
 			}),
+			transformResponse: (response: any, meta, body) => {
+				const token = meta?.response?.headers?.get('authorization');
+				if (token) setTokenToStorage(token);
+
+				return response?.data || 'none'
+			},
 		}),
 		register: builder.mutation<{ message: string }, RegisterCustomerValues | RegisterExecutorValues>({
 			query: (body) => ({
