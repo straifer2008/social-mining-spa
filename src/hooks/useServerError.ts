@@ -3,6 +3,7 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { SerializedError } from '@reduxjs/toolkit';
 import { getErrorMessage } from 'utils';
 import { ErrorResponse } from 'types';
+import { useAPIError } from './useAPIError';
 
 type UseServerErrorProps = {
     isError?: boolean,
@@ -14,13 +15,14 @@ export const useServerError = ({ isError, error }: UseServerErrorProps): {
 	setMessage: (message?: string) => void;
 } => {
 	const [message, setMessage] = useState<string>();
+	const { addError } = useAPIError();
 
 	useEffect(() => {
     if (isError && error) {
       const message = getErrorMessage(error as ErrorResponse);
-	    setMessage(message);
+	    addError({ message });
     }
-  }, [error, isError]);
+  }, [error, isError, addError]);
 
 	return { message, setMessage };
 };

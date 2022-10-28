@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Checkbox, FormControlLabel, Grid, Stack, Typography } from '@mui/material';
-import { Input, Notification } from 'shared';
+import { Input } from 'shared';
 import { useLoginMutation } from 'services';
 import { useServerError, useSetTokenToStorage } from 'hooks';
 import { FormConfigItem, InputTypes, LoginFormValues } from "types";
@@ -49,9 +49,7 @@ export const Form: React.FC = (): JSX.Element => {
 
   useSetTokenToStorage({ result });
 
-  const {message, setMessage} = useServerError({ isError, error: serverError });
-
-	const handleCloseNotification = () => setMessage();
+  useServerError({ isError, error: serverError });
 
   return (
 		<>
@@ -99,17 +97,17 @@ export const Form: React.FC = (): JSX.Element => {
 
 				<Grid container spacing={2}>
 					<Grid item xs={12}>
-						<AuthButton icon={GoogleImg} onClick={() => setMessage('Not done yet')}>
+						<AuthButton icon={GoogleImg}>
 							{t('loginForm.Sign_up_with_Google')}
 						</AuthButton>
 					</Grid>
 					<Grid item xs={6}>
-						<AuthButton icon={FacebookImg} onClick={() => setMessage('Not done yet')}>
+						<AuthButton icon={FacebookImg}>
 							{t('loginForm.Sign_up_with_Facebook')}
 						</AuthButton>
 					</Grid>
 					<Grid item xs={6}>
-						<AuthButton icon={FacebookImg} onClick={() => setMessage('Not done yet')}>
+						<AuthButton icon={FacebookImg}>
 							{t('loginForm.Sig_up_with_Wallet')}
 						</AuthButton>
 					</Grid>
@@ -131,13 +129,6 @@ export const Form: React.FC = (): JSX.Element => {
 					</Grid>
 				</Grid>
 			</form>
-
-			<Notification
-				onClose={handleCloseNotification}
-				open={!!message}
-				content={message}
-				severity="error"
-			/>
 		</>
   );
 };

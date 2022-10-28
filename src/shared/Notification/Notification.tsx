@@ -16,7 +16,7 @@ export const Notification: FC<NotificationProps> = ({
 	onClose,
 	open,
 	autoHideDuration = 3000,
-	severity = 'info'
+	severity = 'error'
 }) => {
 	const element = document.getElementById('portal-root');
 

@@ -25,10 +25,7 @@ export const Card = styled(CardComponent)`
   padding: 40px;
   box-shadow: 0 20px 30px 0 #7E7E7E0D;
   border-radius: 10px;
-  width: 800px;
-  @media (max-width:1180px) {
-	  width: 600px;
-  }
+  width: calc(100% - 80px);
 	
   @media (max-width:920px) {
     width: 100%;

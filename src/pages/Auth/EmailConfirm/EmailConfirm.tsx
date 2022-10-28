@@ -55,7 +55,7 @@ export const EmailConfirm: FC<EmailConfirmDialogProps> = () => {
 		if (msg) {
 			addError({message: msg});
 		}
-	}, [resendMessage, message]);
+	}, [resendMessage, message, addError]);
 
 
 	return (
