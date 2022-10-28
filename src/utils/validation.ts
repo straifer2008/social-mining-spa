@@ -7,7 +7,15 @@ export function emailSchema() {
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function passwordSchema() {
-  return yup.string().min(6).required('Password is required');
+  return yup
+	  .string()
+	  .min(8)
+	  .required('Password is required')
+	  .matches(
+			//@ts-ignore
+		  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%^&*])(?=.{8,})/,
+		  "Must Contain One Uppercase, One Lowercase, One Number and One Special Case Character"
+	  );
 }
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function stringReqSchema(message: string) {

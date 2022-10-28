@@ -23,5 +23,6 @@ export const Login = styled(LoginComponent)`
     font-size: 40px;
     line-height: 141%;
     color: #0E1D40;
+	  margin-bottom: 30px;
   }
 `;

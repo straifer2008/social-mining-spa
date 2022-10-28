@@ -1,0 +1,1 @@
+export { EmailConfirm } from './EmailConfirm'

@@ -7,19 +7,28 @@ export type LoginFormValues = {
 	password: string;
 }
 
-export type RegisterValues = {
+export type RegisterCustomerValues = {
 	role: string;
 	firstName: string;
 	lastName: string;
 	email: string;
 	password: string;
 	passwordConfirm: string;
-	gender?: any;
-	birthDate?: string;
-	countryId?: string;
-	companyName?: string;
-	companyProfile?: string;
-	companyStaffQuantity?: number;
+	companyName: string;
+	companyProfile: string;
+	companyStaffQuantity: number;
+}
+
+export type RegisterExecutorValues = {
+	role: string;
+	firstName: string;
+	lastName: string;
+	email: string;
+	password: string;
+	passwordConfirm: string;
+	gender: any;
+	birthDate: string;
+	countryId: string;
 }
 
 export type AuthState = {
@@ -39,5 +48,12 @@ export type ProfileResponse = {
 
 export enum InputTypes {
 	TEXT = 'text',
-	PASSWORD = 'password'
+	PASSWORD = 'password',
+	SELECT = 'select',
+	DATE = 'date',
+}
+
+export type EmailConfirmRequest = {
+	email: string;
+	code: number
 }

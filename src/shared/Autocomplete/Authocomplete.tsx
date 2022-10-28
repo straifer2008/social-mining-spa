@@ -8,9 +8,9 @@ import {
 	UseFormSetValue,
 } from 'react-hook-form';
 import { Autocomplete as MuiAutocomplete, TextField } from "@mui/material";
-import { getOption } from '../../utils';
-import { Option } from '../../types';
-import { DEFAULT_AUTOCOMPLETE_ID } from '../../constants/common';
+import { getOption } from 'utils';
+import { Option } from 'types';
+import { DEFAULT_AUTOCOMPLETE_ID } from 'constants/common';
 
 type AutocompleteProps<T extends FieldValues> = {
   name: FieldPath<T>,
@@ -27,7 +27,7 @@ type AutocompleteProps<T extends FieldValues> = {
 export const Autocomplete = <T extends FieldValues, > ({
   name,
   options = [],
-  value,
+  value = null,
   setValue,
   error,
   label,
@@ -35,7 +35,7 @@ export const Autocomplete = <T extends FieldValues, > ({
   disabled = false,
   disableClearable = false,
 }: AutocompleteProps<T>): JSX.Element => {
-  const handleChangeSelectValue = useCallback((
+	const handleChangeSelectValue = useCallback((
     _: any,
     data: Option<string | number> | null,
   ): void => {
@@ -62,6 +62,7 @@ export const Autocomplete = <T extends FieldValues, > ({
           label={label}
           error={!!error}
           helperText={error?.message}
+          inputProps={{ ...params.inputProps, autoComplete: 'new-password' }}
         />
       )}
     />

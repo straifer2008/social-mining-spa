@@ -1,5 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { AccessTokenResponse, LoginFormValues, RegisterValues } from 'types';
+import {
+	AccessTokenResponse, EmailConfirmRequest,
+	LoginFormValues,
+	ProfileResponse,
+	RegisterCustomerValues,
+	RegisterExecutorValues
+} from 'types';
 import { prepareHeaders } from 'utils';
 import { API_ROUTES } from 'router/api.routes';
 
@@ -17,14 +23,40 @@ export const authAPI = createApi({
 				body,
 			}),
 		}),
-		register: builder.mutation<AccessTokenResponse, RegisterValues>({
+		register: builder.mutation<{ message: string }, RegisterCustomerValues | RegisterExecutorValues>({
 			query: (body) => ({
 				url: API_ROUTES.AUTH.REGISTER,
 				method: 'POST',
 				body,
 			}),
 		}),
+		getUser: builder.query<ProfileResponse, void>({
+			query: () => ({
+				url: '/v2/auth/user',
+				method: 'GET',
+			})
+		}),
+		emailConfirm: builder.mutation<{ message: string }, EmailConfirmRequest>({
+			query: (body) => ({
+				url: '/v2/auth/email-confirm',
+				method: 'POST',
+				body,
+			})
+		}),
+		emailConfirmResend: builder.mutation<{ message: string }, { email: string }>({
+			query: (body) => ({
+				url: '/v2/auth/resend-code',
+				method: 'POST',
+				body
+			})
+		})
 	})
 });
 
-export const { useLoginMutation, useRegisterMutation } = authAPI;
+export const {
+	useLoginMutation,
+	useRegisterMutation,
+	useGetUserQuery,
+	useEmailConfirmMutation,
+	useEmailConfirmResendMutation
+} = authAPI;

@@ -18,6 +18,6 @@ export const AuthButton: FC<AuthButtonProps> = ({ onClick, icon, children, ...pr
 };
 
 const Icon = styled.img`
-  margin: 0 20px 0 10px;
+  margin: 0 20px 0 0;
   max-width: 30px;
 `;

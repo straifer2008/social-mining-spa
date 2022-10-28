@@ -13,7 +13,7 @@ export const theme = createTheme({
     },
     info: {
       main: "#0E1D40"
-    }
+    },
     // warning: {
     //   main: ''
     // },

@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import ROUTES from "./routes";
 import { AppLayout, AuthLayout } from 'layouts';
-import { MyProfile, Login, Register } from 'pages';
+import { MyProfile, Login, Register, EmailConfirm } from 'pages';
 
 const router = createBrowserRouter([
 	{
@@ -24,7 +24,13 @@ const router = createBrowserRouter([
 			},
 			{
 				path: ROUTES.AUTH.REGISTER,
-				element: <Register />
+				element: <Register />,
+				children: [
+					{
+						path: ':email',
+						element: <EmailConfirm />
+					}
+				]
 			}
 		]
 	}
