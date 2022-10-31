@@ -1,16 +1,24 @@
 // created by Artem
-import { FC, MouseEventHandler, ReactNode } from 'react';
-import { Button } from '@mui/material';
+import { FC, ReactNode, ElementType } from 'react';
+import { Button, ButtonProps } from '@mui/material';
 import styled from 'styled-components';
 
 type AuthButtonProps = {
-  onClick?: MouseEventHandler<HTMLButtonElement>;
   icon?: string;
   children?: ReactNode;
-};
-export const AuthButton: FC<AuthButtonProps> = ({ onClick, icon, children, ...props }) => {
+	to?: string;
+	component?: ElementType;
+} & ButtonProps;
+export const AuthButton: FC<AuthButtonProps> = ({
+	                                                onClick,
+	                                                icon,
+	                                                children,
+	                                                variant = 'outlined',
+	                                                fullWidth = true,
+	                                                ...props
+}) => {
   return (
-    <Button variant="outlined" onClick={onClick} fullWidth {...props}>
+    <Button variant={variant} onClick={onClick} fullWidth={fullWidth} {...props}>
       {icon && <Icon src={icon} alt="auth-icon" />}
       {children}
     </Button>

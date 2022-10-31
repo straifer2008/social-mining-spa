@@ -5,6 +5,7 @@ export const API_ROUTES = {
     REGISTER: 'v2/auth/register',
     EMAIL_CONFIRM: '/v2/auth/email-confirm',
     EMAIL_CONFIRM_RESEND: '/v2/auth/resend-code',
+	  FORGOT_PASSWORD: '/v2/password/send-code',
     GET_USER: '/v2/auth/user',
 	  GOOGLE_OPEN: '/v2/auth/google/open',
 	  FACEBOOK_OPEN: '/v2/auth/facebook/open',
@@ -17,3 +18,8 @@ export const API_ROUTES = {
 		COUNTRIES: '/v2/country/list'
 	}
 };
+
+export const SOCIAL: { GOOGLE: string, FACEBOOK: string } = {
+	GOOGLE: `${process.env.REACT_APP_API_URL}${API_ROUTES.AUTH.GOOGLE_OPEN}`,
+	FACEBOOK: `${process.env.REACT_APP_API_URL}${API_ROUTES.AUTH.FACEBOOK_OPEN}`
+}

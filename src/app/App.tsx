@@ -6,6 +6,7 @@ import { ThemeProvider } from '@mui/material';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import APIErrorProvider from '../utils/APIError';
+import './App.scss';
 
 
 function App() {

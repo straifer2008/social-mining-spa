@@ -1,10 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
-	AccessTokenResponse, DefaultResponse, EmailConfirmRequest,
+	AccessTokenResponse,
+	DefaultResponse,
+	EmailConfirmRequest,
 	LoginFormValues,
 	ProfileResponse,
 	RegisterCustomerValues,
-	RegisterExecutorValues, SocialRegisterBody
+	RegisterExecutorValues,
+	SocialRegisterBody
 } from 'types';
 import { prepareHeaders, removeTokenFromStorage, setTokenToStorage } from 'utils';
 import { API_ROUTES } from 'router/api.routes';
@@ -76,16 +79,11 @@ export const authAPI = createApi({
 				return response
 			},
 		}),
-		googleOpen: builder.query<any, void>({
-			query: () => ({
-				url: API_ROUTES.AUTH.GOOGLE_OPEN,
-				method: 'GET'
-			})
-		}),
-		facebookOpen: builder.query<any, void>({
-			query: () => ({
-				url: API_ROUTES.AUTH.FACEBOOK_OPEN,
-				method: 'GET'
+		forgotPassword: builder.mutation<DefaultResponse, { email: string }>({
+			query: (body) => ({
+				url: API_ROUTES.AUTH.FORGOT_PASSWORD,
+				method: 'POST',
+				body,
 			})
 		}),
 		googleAuth: builder.mutation<any, SocialRegisterBody>({
@@ -122,12 +120,11 @@ export const authAPI = createApi({
 export const {
 	useLoginMutation,
 	useRegisterMutation,
+	useForgotPasswordMutation,
 	useGetUserQuery,
 	useEmailConfirmMutation,
 	useEmailConfirmResendMutation,
 	useLogoutMutation,
-	useGoogleOpenQuery,
-	useFacebookOpenQuery,
 	useGoogleAuthMutation,
 	useFacebookAuthMutation,
 	useWalletConnectMutation,

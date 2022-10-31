@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import ROUTES from "./routes";
 import { AppLayout, AuthLayout } from 'layouts';
-import { MyProfile, Login, Register, EmailConfirm } from 'pages';
+import { MyProfile, Login, Register, EmailConfirm, ForgotPassword } from 'pages';
 
 const router = createBrowserRouter([
 	{
@@ -20,7 +20,11 @@ const router = createBrowserRouter([
 		children: [
 			{
 				path: ROUTES.AUTH.LOGIN,
-				element: <Login />
+				element: <Login />,
+			},
+			{
+				path: 'forgot',
+				element: <ForgotPassword />
 			},
 			{
 				path: ROUTES.AUTH.REGISTER,

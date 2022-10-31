@@ -1,4 +1,4 @@
-import { createContext, useCallback, useState } from 'react'
+import { createContext, FC, ReactNode, useCallback, useState } from 'react'
 import { Notification } from 'shared';
 import { AlertColor } from '@mui/material/Alert/Alert';
 
@@ -19,16 +19,16 @@ export const APIErrorContext = createContext<APIErrorContextI>({
 	removeError: () => {}
 });
 
-export default function APIErrorProvider({ children }) {
+const APIErrorProvider: FC<{ children?: ReactNode}> = ({ children }) => {
 	const [error, setError] = useState<APIErrorI | null>(null);
 
 	const removeError = () => setError(null);
 
-	const addError = (newError) => setError(newError);
+	const addError = (newError: APIErrorI) => setError(newError);
 
 	const contextValue = {
 		error,
-		addError: useCallback((newError) => addError(newError), []),
+		addError: useCallback((newError: APIErrorI) => addError(newError), []),
 		removeError: useCallback(() => removeError(), [])
 	};
 
@@ -46,3 +46,4 @@ export default function APIErrorProvider({ children }) {
 	);
 }
 
+export default APIErrorProvider;

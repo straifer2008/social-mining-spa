@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Checkbox, FormControlLabel, Grid, Stack, Typography } from '@mui/material';
+import { Button, Checkbox, FormControlLabel, Grid, Stack, Typography, Link as MuiLink } from '@mui/material';
 import { Input } from 'shared';
 import { useLoginMutation } from 'services';
 import { useServerError } from 'hooks';
@@ -13,6 +13,7 @@ import GoogleImg from 'assets/images/icons/google-icon.svg';
 import FacebookImg from 'assets/images/icons/facebook-icon.svg';
 import { AuthButton, AuthDivider } from '../components';
 import ROUTES from 'router/routes';
+import { SOCIAL } from 'router/api.routes';
 import { changeAuthenticationState } from 'store/auth/slice';
 import { useDispatch } from 'react-redux';
 
@@ -55,83 +56,87 @@ export const Form: React.FC = (): JSX.Element => {
 	if (loginData && !isError) dispatch(changeAuthenticationState(true));
 
   return (
-		<>
-			<form onSubmit={handleSubmit(onSubmit)}>
-				<Stack spacing={3}>
-					{CONFIG.map(({ name, label, type, placeholder }) => (
-						<Controller
-							key={name}
-							name={name}
-							control={control}
-							defaultValue=""
-							render={({
-								         field: { onBlur, onChange, value }, fieldState: { error },
-							         }): JSX.Element => (
-								<Input
-									onChange={onChange}
-									onBlur={onBlur}
-									value={value}
-									error={error}
-									label={t(label)}
-									placeholder={placeholder && t(placeholder)}
-									type={type}
-								/>
-							)}
-						/>
-					))}
-				</Stack>
+	  <form onSubmit={handleSubmit(onSubmit)}>
+		  <Stack spacing={3}>
+			  {CONFIG.map(({ name, label, type, placeholder }) => (
+				  <Controller
+					  key={name}
+					  name={name}
+					  control={control}
+					  defaultValue=""
+					  render={({
+						           field: { onBlur, onChange, value }, fieldState: { error },
+					           }): JSX.Element => (
+						  <Input
+							  onChange={onChange}
+							  onBlur={onBlur}
+							  value={value}
+							  error={error}
+							  label={t(label)}
+							  placeholder={placeholder && t(placeholder)}
+							  type={type}
+						  />
+					  )}
+				  />
+			  ))}
+		  </Stack>
 
-				<Stack sx={{ mt: 2, mb: 4 }} justifyContent="flex-start">
-					<FormControlLabel control={<Checkbox color="primary" defaultChecked />} label="Captcha" />
-				</Stack>
+		  <Stack justifyContent="flex-end" flexDirection="row" sx={{ mt: 2, mb: 3 }}>
+			  <Link to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.FORGOT_PASSWORD}`}>
+				  {t('loginForm.btnForgot')}
+			  </Link>
+		  </Stack>
 
-				<Button
-					size="large"
-					type="submit"
-					color="primary"
-					variant="contained"
-					disabled={isSubmitting}
-					fullWidth
-				>
-					{t('loginForm.submit')}
-				</Button>
+		  <Stack sx={{ mt: 2, mb: 4 }} justifyContent="flex-start">
+			  <FormControlLabel control={<Checkbox color="primary" defaultChecked />} label="Captcha" />
+		  </Stack>
 
-				<AuthDivider>{t('loginForm.Or_use_services')}</AuthDivider>
+		  <Button
+			  size="large"
+			  type="submit"
+			  color="primary"
+			  variant="contained"
+			  disabled={isSubmitting}
+			  fullWidth
+		  >
+			  {t('loginForm.submit')}
+		  </Button>
 
-				<Grid container spacing={2}>
-					<Grid item xs={12}>
-						<AuthButton icon={GoogleImg}>
-							{t('loginForm.Sign_up_with_Google')}
-						</AuthButton>
-					</Grid>
-					<Grid item xs={6}>
-						<AuthButton icon={FacebookImg}>
-							{t('loginForm.Sign_up_with_Facebook')}
-						</AuthButton>
-					</Grid>
-					<Grid item xs={6}>
-						<AuthButton icon={FacebookImg}>
-							{t('loginForm.Sig_up_with_Wallet')}
-						</AuthButton>
-					</Grid>
-				</Grid>
+		  <AuthDivider>{t('loginForm.Or_use_services')}</AuthDivider>
 
-				<Grid container sx={{ mt: 3 }}>
-					<Grid item xs={6} md={8} alignSelf="center">
-						<Typography>{t('loginForm.registerLink.text1')}</Typography>
-					</Grid>
-					<Grid item xs={6} md={4}>
-						<Button
-							variant="outlined"
-							component={Link}
-							to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.REGISTER}`}
-							fullWidth
-						>
-							{t('loginForm.registerLink.text2')}
-						</Button>
-					</Grid>
-				</Grid>
-			</form>
-		</>
+		  <Grid container spacing={2}>
+			  <Grid item xs={12}>
+				  <AuthButton icon={GoogleImg} component={MuiLink} href={SOCIAL.GOOGLE}>
+					  {t('loginForm.Sign_up_with_Google')}
+				  </AuthButton>
+			  </Grid>
+			  <Grid item xs={6}>
+				  <AuthButton icon={FacebookImg} component={MuiLink} href={SOCIAL.FACEBOOK}>
+					  {t('loginForm.Sign_up_with_Facebook')}
+				  </AuthButton>
+			  </Grid>
+			  <Grid item xs={6}>
+				  <AuthButton icon={FacebookImg}>
+					  {t('loginForm.Sig_up_with_Wallet')}
+				  </AuthButton>
+			  </Grid>
+		  </Grid>
+
+		  <Grid container sx={{ mt: 3 }}>
+			  <Grid item xs={6} md={8} alignSelf="center">
+				  <Typography>{t('loginForm.registerLink.text1')}</Typography>
+			  </Grid>
+			  <Grid item xs={6} md={4}>
+				  <Button
+					  variant="outlined"
+					  component={Link}
+					  to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.REGISTER}`}
+					  fullWidth
+				  >
+					  {t('loginForm.registerLink.text2')}
+				  </Button>
+			  </Grid>
+		  </Grid>
+	  </form>
   );
 };

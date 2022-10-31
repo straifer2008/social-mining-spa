@@ -1,7 +1,6 @@
 // created by Artem
 import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
 import { Button, Grid, Typography } from '@mui/material';
 import { Link, Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 import ROUTES from 'router/routes';
@@ -9,7 +8,7 @@ import { useGoogleAuthMutation, useRegisterMutation } from 'services';
 import { useCommonSuccess, useServerError } from 'hooks';
 import { RegisterCustomerValues, RegisterExecutorValues, UserRoles } from 'types';
 import { Form } from './Form';
-import { RoleSwitcher } from '../components';
+import { RoleSwitcher, AuthTitle } from '../components';
 import {
 	CONFIG_CUSTOMER,
 	CONFIG_EXECUTOR
@@ -45,7 +44,7 @@ export const Register: FC = () => {
 
 	return (
 		<div>
-			<Title>{t('registerForm.title')}</Title>
+			<AuthTitle>{t('registerForm.title')}</AuthTitle>
 
 			<RoleSwitcher setRole={setRole} value={role} />
 
@@ -75,14 +74,3 @@ export const Register: FC = () => {
 		</div>
 	);
 };
-
-const Title = styled.h5`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 40px;
-  line-height: 141%;
-  text-align: center;
-  color: #0E1D40;
-	margin-bottom: 40px;
-`

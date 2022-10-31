@@ -31,7 +31,7 @@ export function numberReqSchema(message: string) {
 export function repeatPasswordSchema() {
   return yup.string()
     .when('password', {
-      is: (val) => val && val.length > 0,
+      is: (val: any) => val && val.length > 0,
       then: yup.string().oneOf([yup.ref('password')], 'Passwords must match'),
     }).required('Repeating password is required');
 }
