@@ -6,6 +6,8 @@ export const API_ROUTES = {
     EMAIL_CONFIRM: '/v2/auth/email-confirm',
     EMAIL_CONFIRM_RESEND: '/v2/auth/resend-code',
 	  FORGOT_PASSWORD: '/v2/password/send-code',
+	  FORGOT_SEND_CODE: '/v2/password/confirm-code',
+	  RESET_PASSWORD: '/v2/password/reset',
     GET_USER: '/v2/auth/user',
 	  GOOGLE_OPEN: '/v2/auth/google/open',
 	  FACEBOOK_OPEN: '/v2/auth/facebook/open',

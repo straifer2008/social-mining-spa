@@ -1,10 +1,11 @@
 // created by Artem
 import { ChangeEvent, FC, useState } from 'react';
-import { Button, Stack, styled, TextField, Typography, CircularProgress } from '@mui/material';
+import { Button, Stack, Typography, CircularProgress } from '@mui/material';
 import { Dialog } from 'shared';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEmailConfirmMutation, useEmailConfirmResendMutation } from 'services';
 import { useCommonSuccess, useServerError } from 'hooks';
+import { ConfirmCodeInput } from '../components';
 
 type EmailConfirmDialogProps = {};
 export const EmailConfirm: FC<EmailConfirmDialogProps> = () => {
@@ -26,14 +27,14 @@ export const EmailConfirm: FC<EmailConfirmDialogProps> = () => {
 		error: resendError
 	}] = useEmailConfirmResendMutation();
 
-	useServerError({
-		error: confirmError || resendError,
-		isError: confirmIsError || resendIsError
-	});
+	useServerError({ error: confirmError, isError: confirmIsError });
+	useServerError({ error: resendError, isError: resendIsError });
+
+	useCommonSuccess({ message: resendData?.message, condition: resendIsSuccess });
 	useCommonSuccess({
-		message: resendData?.message || confirmData?.message,
-		condition: (resendIsSuccess && !!resendData?.message) || (confirmIsSuccess && !!confirmData?.message),
-		callback: () => confirmIsSuccess && navigate('/')
+		message: confirmData?.message,
+		condition: confirmIsSuccess,
+		callback: () => navigate('/')
 	});
 
 	const changeCodeHandle = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -100,28 +101,3 @@ export const EmailConfirm: FC<EmailConfirmDialogProps> = () => {
 		</>
 	);
 };
-
-
-const ConfirmCodeInput = styled(TextField)`
-	.MuiInputBase-root {
-    padding: 50px 40px;
-    background-color: #EBECF04D;
-	}
-	
-	.MuiInputBase-input {
-    color: #0E1D40;
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 30px;
-		letter-spacing: 40px;
-    line-height: 141%;
-		text-align: center;
-		@media screen and (max-width: 768px) {
-      font-size: 24px;
-      letter-spacing: 30px;
-			padding-right: 0;
-			padding-left: 0;
-		}
-	}
-`;

@@ -1,2 +1,2 @@
 export { MyProfile } from './MyProfile'
-export { Login, Register, EmailConfirm, ForgotPassword } from './Auth'
+export { Login, Register, EmailConfirm, ForgotPassword, ResetPassword } from './Auth'

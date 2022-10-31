@@ -24,6 +24,12 @@ export type RegisterCustomerValues = {
 	companyStaffQuantity: number;
 }
 
+export type ResetPasswordValues = {
+	userId: string;
+	password: string;
+	passwordConfirm: string;
+}
+
 export type RegisterExecutorValues = {
 	role: string;
 	firstName: string;

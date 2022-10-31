@@ -7,6 +7,7 @@ import {
 	ProfileResponse,
 	RegisterCustomerValues,
 	RegisterExecutorValues,
+	ResetPasswordValues,
 	SocialRegisterBody
 } from 'types';
 import { prepareHeaders, removeTokenFromStorage, setTokenToStorage } from 'utils';
@@ -64,20 +65,21 @@ export const authAPI = createApi({
 				url: API_ROUTES.AUTH.EMAIL_CONFIRM,
 				method: 'POST',
 				body,
-			})
+			}),
+			transformResponse: (response: DefaultResponse, meta) => {
+				const token = meta?.response?.headers?.get('authorization');
+				if (token) setTokenToStorage(token);
+
+				return response
+			},
+			invalidatesTags: ['User']
 		}),
 		emailConfirmResend: builder.mutation<DefaultResponse, { email: string }>({
 			query: (body) => ({
 				url: API_ROUTES.AUTH.EMAIL_CONFIRM_RESEND,
 				method: 'POST',
 				body
-			}),
-			transformResponse: (response: any, meta, body) => {
-				const token = meta?.response?.headers?.get('authorization');
-				if (token) setTokenToStorage(token);
-
-				return response
-			},
+			})
 		}),
 		forgotPassword: builder.mutation<DefaultResponse, { email: string }>({
 			query: (body) => ({
@@ -86,14 +88,28 @@ export const authAPI = createApi({
 				body,
 			})
 		}),
-		googleAuth: builder.mutation<any, SocialRegisterBody>({
+		forgotCode: builder.mutation<DefaultResponse & { userId: number }, { email: string; code: number; }>({
+			query: (body) => ({
+				url: API_ROUTES.AUTH.FORGOT_SEND_CODE,
+				method: 'POST',
+				body
+			})
+		}),
+		resetPassword: builder.mutation<DefaultResponse, ResetPasswordValues>({
+			query: (body) => ({
+				url: API_ROUTES.AUTH.RESET_PASSWORD,
+				method: 'POST',
+				body
+			})
+		}),
+		googleAuth: builder.mutation<DefaultResponse, SocialRegisterBody>({
 			query: (body: SocialRegisterBody) => ({
 				url: API_ROUTES.AUTH.GOOGLE_AUTH,
 				method: 'POST',
 				body
 			})
 		}),
-		facebookAuth: builder.mutation<any, SocialRegisterBody>({
+		facebookAuth: builder.mutation<DefaultResponse, SocialRegisterBody>({
 			query: (body: SocialRegisterBody) => ({
 				url: API_ROUTES.AUTH.FACEBOOK_AUTH,
 				method: 'POST',
@@ -121,6 +137,8 @@ export const {
 	useLoginMutation,
 	useRegisterMutation,
 	useForgotPasswordMutation,
+	useForgotCodeMutation,
+	useResetPasswordMutation,
 	useGetUserQuery,
 	useEmailConfirmMutation,
 	useEmailConfirmResendMutation,

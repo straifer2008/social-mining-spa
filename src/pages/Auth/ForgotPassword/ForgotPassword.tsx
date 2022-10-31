@@ -6,69 +6,130 @@ import { AuthTitle } from '../components';
 import { Controller, useForm } from 'react-hook-form';
 import { Input } from 'shared';
 import { InputTypes } from 'types';
-import { Button, Stack } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Button, Stack, Typography, Link as MuiLink } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
 import ROUTES from 'router/routes';
-import { roles } from './rules';
-import { useForgotPasswordMutation } from 'services';
-import { useCommonSuccess, useServerError } from '../../../hooks';
+import { rulesCode, rulesEmail } from './rules';
+import { useForgotCodeMutation, useForgotPasswordMutation } from 'services';
+import { useCommonSuccess, useServerError } from 'hooks';
+import { ConfirmCodeInput } from '../components';
 
 type ForgotPasswordProps = {};
 export const ForgotPassword: FC<ForgotPasswordProps> = () => {
 	const { t } = useTranslation();
-	const [onForgot, { isError, error, isSuccess, data }] = useForgotPasswordMutation();
-	const form = useForm<{ email: string }>({
-		resolver: yupResolver(roles),
-		defaultValues: { email: '' }
+	const navigate = useNavigate();
+	const [onForgot, { isError: isEmailError, error: emailError, isSuccess: isEmailSuccess, data: emailData }] = useForgotPasswordMutation();
+	const [sendCode, { isError: isCodeError, error: codeError, isSuccess: isCodeSuccess, data: codeData }] = useForgotCodeMutation();
+
+	const emailForm = useForm<{ email: string }>({ resolver: yupResolver(rulesEmail), defaultValues: { email: '' } });
+	const codeForm = useForm<{ code: string }>({ resolver: yupResolver(rulesCode), defaultValues: { code: '' } });
+	const email = emailForm.getValues('email');
+	const isShowCodeForm = !!email && isEmailSuccess;
+
+	useServerError({ isError: isEmailError, error: emailError });
+	useServerError({ isError: isCodeError, error: codeError });
+	useCommonSuccess({ message: emailData?.message, condition: isEmailSuccess });
+	useCommonSuccess({
+		message: codeData?.message,
+		condition: isCodeSuccess,
+		callback: () => {
+			console.log(codeData, '---codeData')
+			if (isCodeSuccess && codeData?.userId) navigate(`${codeData.userId}`);
+		}
 	});
 
-	useServerError({ isError, error });
-	useCommonSuccess({
-		message: data?.message,
-		condition: isSuccess,
-	})
+	const backHandle = () => {
+		emailForm.reset({ email: '' });
+		codeForm.reset({ code: '' });
+	}
 
-	const submitHandle = (values: { email: string }) => onForgot(values);
+	const submitEmailHandle = (values: { email: string }) => onForgot(values);
+	const submitCodeHandle = (values: { code: string }) => sendCode({ code: Number(values.code), email });
 
 	return (
 		<div>
 			<AuthTitle>{t('resetPasswordForm.title')}</AuthTitle>
+			{isShowCodeForm ? (
+				<>
+					<form onSubmit={codeForm.handleSubmit(submitCodeHandle)}>
+						<Stack sx={{ mt: 2, mb: 4, maxWidth: '75%' }}>
+							<Typography>Hi,</Typography>
+							<Typography>Enter the verification code that was sent to <em>{emailForm.getValues('email')}</em>.</Typography>
+						</Stack>
 
-			<form onSubmit={form.handleSubmit(submitHandle)}>
-				<Stack sx={{ mb: 3 }}>
-					<Controller
-						name="email"
-						control={form.control}
-						defaultValue=""
-						render={({field, fieldState}) => (
-							<Input
-								onChange={field.onChange}
-								onBlur={field.onBlur}
-								value={field.value}
-								error={fieldState.error}
-								label={t('resetPasswordForm.labelEmail')}
-								placeholder={t('resetPasswordForm.placeholderEmail')}
-								type={InputTypes.TEXT}
+						<Stack sx={{ mt: 2, mb: 4 }}>
+							<Controller
+								name="code"
+								control={codeForm.control}
+								defaultValue=""
+								render={({field, fieldState}) => (
+									<ConfirmCodeInput
+										type="new-password"
+										required={false}
+										fullWidth
+										onChange={field.onChange}
+										onBlur={field.onBlur}
+										value={field.value}
+										error={!!fieldState.error}
+										helperText={fieldState?.error?.message}
+										inputProps={{ autoComplete: 'new-password' }}
+									/>
+								)}
 							/>
-						)}
-					/>
-				</Stack>
+						</Stack>
 
-				<Button
-					size="large"
-					type="submit"
-					color="primary"
-					variant="contained"
-					disabled={form.formState.isSubmitting}
-					fullWidth
-				>{t('resetPasswordForm.submit')}</Button>
-			</form>
+						<Button
+							size="large"
+							type="submit"
+							color="primary"
+							variant="contained"
+							disabled={codeForm.formState.isSubmitting}
+							fullWidth
+						>{t('resetPasswordForm.submit')}</Button>
+					</form>
+					<Stack justifyContent="flex-end" flexDirection="row" sx={{ mt: 2, mb: 3 }}>
+						<MuiLink onClick={backHandle}>Back</MuiLink>
+					</Stack>
+				</>
+			) : (
+				<>
+					<form onSubmit={emailForm.handleSubmit(submitEmailHandle)}>
+						<Stack sx={{ mb: 3 }}>
+							<Controller
+								name="email"
+								control={emailForm.control}
+								defaultValue=""
+								render={({field, fieldState}) => (
+									<Input
+										onChange={field.onChange}
+										onBlur={field.onBlur}
+										value={field.value}
+										error={fieldState.error}
+										label={t('resetPasswordForm.labelEmail')}
+										placeholder={t('resetPasswordForm.placeholderEmail')}
+										type={InputTypes.TEXT}
+									/>
+								)}
+							/>
+						</Stack>
 
-			<Stack justifyContent="flex-end" flexDirection="row" sx={{ mt: 2, mb: 3 }}>
-				<Link to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.LOGIN}`}>
-					{t('resetPasswordForm.lonkLogin')}
-				</Link>
-			</Stack>
+						<Button
+							size="large"
+							type="submit"
+							color="primary"
+							variant="contained"
+							disabled={emailForm.formState.isSubmitting}
+							fullWidth
+						>{t('resetPasswordForm.submit')}</Button>
+					</form>
+
+					<Stack justifyContent="flex-end" flexDirection="row" sx={{ mt: 2, mb: 3 }}>
+						<Link to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.LOGIN}`}>
+							{t('resetPasswordForm.lonkLogin')}
+						</Link>
+					</Stack>
+				</>
+			)}
 		</div>
 	);
 };

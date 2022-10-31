@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import ROUTES from "./routes";
 import { AppLayout, AuthLayout } from 'layouts';
-import { MyProfile, Login, Register, EmailConfirm, ForgotPassword } from 'pages';
+import { MyProfile, Login, Register, EmailConfirm, ForgotPassword, ResetPassword } from 'pages';
 
 const router = createBrowserRouter([
 	{
@@ -24,7 +24,11 @@ const router = createBrowserRouter([
 			},
 			{
 				path: 'forgot',
-				element: <ForgotPassword />
+				element: <ForgotPassword />,
+			},
+			{
+				path: 'forgot/:userId',
+				element: <ResetPassword />
 			},
 			{
 				path: ROUTES.AUTH.REGISTER,
