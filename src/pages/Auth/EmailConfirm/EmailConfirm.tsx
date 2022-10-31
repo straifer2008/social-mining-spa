@@ -1,27 +1,40 @@
 // created by Artem
-import { ChangeEvent, FC, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import { Button, Stack, styled, TextField, Typography, CircularProgress } from '@mui/material';
-import { Dialog, Notification } from 'shared';
-import { useParams } from 'react-router-dom';
+import { Dialog } from 'shared';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEmailConfirmMutation, useEmailConfirmResendMutation } from 'services';
-import { useAPIError, useServerError } from 'hooks';
+import { useCommonSuccess, useServerError } from 'hooks';
 
 type EmailConfirmDialogProps = {};
 export const EmailConfirm: FC<EmailConfirmDialogProps> = () => {
+	const navigate = useNavigate();
 	const { email } = useParams<{ email: string }>();
-	const { addError } = useAPIError()
 	const [code, setCode] = useState<number>();
-	const [emailConfirmRequest, { isLoading, isError, error }] = useEmailConfirmMutation();
+	const [emailConfirmRequest, {
+		data: confirmData,
+		isSuccess: confirmIsSuccess,
+		isLoading: confirmLoading,
+		isError: confirmIsError,
+		error: confirmError
+	}] = useEmailConfirmMutation();
 	const [resendEmailConfirmRequest, {
+		data: resendData,
+		isSuccess: resendIsSuccess,
 		isLoading: resendLoading,
 		isError: resendIsError,
 		error: resendError
 	}] = useEmailConfirmResendMutation();
-	const { message, setMessage } = useServerError({ error, isError });
-	const {
-		message: resendMessage,
-		setMessage: setResendMessage
-	} = useServerError({ error: resendError, isError: resendIsError });
+
+	useServerError({
+		error: confirmError || resendError,
+		isError: confirmIsError || resendIsError
+	});
+	useCommonSuccess({
+		message: resendData?.message || confirmData?.message,
+		condition: (resendIsSuccess && !!resendData?.message) || (confirmIsSuccess && !!confirmData?.message),
+		callback: () => confirmIsSuccess && navigate('/')
+	});
 
 	const changeCodeHandle = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		const regex = /^[0-9\b]+$/;
@@ -45,19 +58,6 @@ export const EmailConfirm: FC<EmailConfirmDialogProps> = () => {
 		}
 	}
 
-	const handleCloseNotification = () => {
-		setMessage();
-		setResendMessage();
-	}
-
-	useEffect(() => {
-		const msg = message || resendMessage;
-		if (msg) {
-			addError({message: msg});
-		}
-	}, [resendMessage, message, addError]);
-
-
 	return (
 		<>
 			<Dialog
@@ -74,11 +74,12 @@ export const EmailConfirm: FC<EmailConfirmDialogProps> = () => {
 				<Stack sx={{ mt: 2, mb: 4 }}>
 					<ConfirmCodeInput
 						type="new-password"
+						error={`${code}`.length < 6}
 						required
 						fullWidth
 						value={code || ''}
 						onChange={changeCodeHandle}
-						inputProps={{ maxLength: 6, autoComplete: 'new-password' }}
+						inputProps={{ minLength: 6, maxLength: 6, autoComplete: 'new-password' }}
 					/>
 				</Stack>
 
@@ -87,8 +88,8 @@ export const EmailConfirm: FC<EmailConfirmDialogProps> = () => {
 						onClick={confirmHandle}
 						variant="contained"
 						fullWidth
-						disabled={isLoading}
-					>{isLoading? <CircularProgress /> : 'Confirm'}</Button>
+						disabled={confirmLoading}
+					>{confirmLoading? <CircularProgress /> : 'Confirm'}</Button>
 					<Button
 						onClick={resendHandle}
 						variant="text"
@@ -96,13 +97,6 @@ export const EmailConfirm: FC<EmailConfirmDialogProps> = () => {
 					>{resendLoading ? <CircularProgress /> : 'Resend code'}</Button>
 				</Stack>
 			</Dialog>
-
-			<Notification
-				onClose={handleCloseNotification}
-				open={!!message || !!resendMessage}
-				content={message || resendMessage}
-				severity="error"
-			/>
 		</>
 	);
 };

@@ -1,13 +1,13 @@
 // created by Artem
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Button, Grid, Typography } from '@mui/material';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 import ROUTES from 'router/routes';
-import { useRegisterMutation } from 'services';
-import { useServerError } from 'hooks';
-import { Notification } from 'shared';
+import { useGoogleAuthMutation, useRegisterMutation } from 'services';
+import { useCommonSuccess, useServerError } from 'hooks';
+import { RegisterCustomerValues, RegisterExecutorValues, UserRoles } from 'types';
 import { Form } from './Form';
 import { RoleSwitcher } from '../components';
 import {
@@ -17,16 +17,31 @@ import {
 
 export const Register: FC = () => {
 	const { t } = useTranslation();
-	const [role, setRole] = useState<'customer' | 'executor'>('executor');
-	const [registerQuery, { data: response, isError, error: serverError }] = useRegisterMutation();
+	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
+	const [role, setRole] = useState<UserRoles>(UserRoles.executor);
+	const [userEmail, setUserEmail] = useState<string>('test@test.com');
+	const [registerQuery, { data: regData, isSuccess: isRegSuccess, isError: isRegError, error: regError }] = useRegisterMutation();
+	const [googleAuth, { isError: isGoogleError, error: googleError }] = useGoogleAuthMutation();
+	const code: string | null = searchParams.get('code');
+	const isError = isRegError || isGoogleError;
+	const error = regError || googleError;
 
-	const { message, setMessage } = useServerError({ isError, error: serverError });
-
-	const handleCloseNotification = () => setMessage();
-
-	const onSubmitHandle = (values) => {
-		registerQuery(values);
+	const onSubmitHandle = async (values: RegisterCustomerValues | RegisterExecutorValues) => {
+		await registerQuery(values);
+		setUserEmail(values.email);
 	}
+
+	useServerError({ isError, error });
+	useCommonSuccess({
+		message: regData?.message,
+		callback: () => navigate(userEmail),
+		condition: isRegSuccess && !!userEmail,
+	});
+
+	useEffect(() => {
+		if (code && !isGoogleError) googleAuth({ code });
+	}, [code, googleAuth, isGoogleError]);
 
 	return (
 		<div>
@@ -55,13 +70,6 @@ export const Register: FC = () => {
 					</Button>
 				</Grid>
 			</Grid>
-
-			<Notification
-				onClose={handleCloseNotification}
-				open={!!message || !!response?.message}
-				content={message || response?.message}
-				severity={ isError ? 'error' : 'success'}
-			/>
 
 			<Outlet />
 		</div>

@@ -1,12 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
-	AccessTokenResponse, EmailConfirmRequest,
+	AccessTokenResponse, DefaultResponse, EmailConfirmRequest,
 	LoginFormValues,
 	ProfileResponse,
 	RegisterCustomerValues,
-	RegisterExecutorValues
+	RegisterExecutorValues, SocialRegisterBody
 } from 'types';
-import { prepareHeaders, setTokenToStorage } from 'utils';
+import { prepareHeaders, removeTokenFromStorage, setTokenToStorage } from 'utils';
 import { API_ROUTES } from 'router/api.routes';
 
 export const authAPI = createApi({
@@ -15,6 +15,7 @@ export const authAPI = createApi({
 		baseUrl: process.env.REACT_APP_API_URL,
 		prepareHeaders,
 	}),
+	tagTypes: ['User'],
 	endpoints: (builder) => ({
 		login: builder.mutation<AccessTokenResponse, LoginFormValues>({
 			query: (body) => ({
@@ -26,10 +27,22 @@ export const authAPI = createApi({
 				const token = meta?.response?.headers?.get('authorization');
 				if (token) setTokenToStorage(token);
 
-				return response?.data || 'none'
+				return response
 			},
+			invalidatesTags: ['User']
 		}),
-		register: builder.mutation<{ message: string }, RegisterCustomerValues | RegisterExecutorValues>({
+		logout: builder.mutation<DefaultResponse, void>({
+			query: () => ({
+				url: API_ROUTES.AUTH.LOGOUT,
+				method: 'POST',
+			}),
+			transformResponse: (response: DefaultResponse) => {
+				removeTokenFromStorage();
+
+				return response;
+			}
+		}),
+		register: builder.mutation<DefaultResponse, RegisterCustomerValues | RegisterExecutorValues>({
 			query: (body) => ({
 				url: API_ROUTES.AUTH.REGISTER,
 				method: 'POST',
@@ -38,24 +51,71 @@ export const authAPI = createApi({
 		}),
 		getUser: builder.query<ProfileResponse, void>({
 			query: () => ({
-				url: '/v2/auth/user',
+				url: API_ROUTES.AUTH.GET_USER,
 				method: 'GET',
-			})
+			}),
+			providesTags: ['User']
 		}),
-		emailConfirm: builder.mutation<{ message: string }, EmailConfirmRequest>({
+		emailConfirm: builder.mutation<DefaultResponse, EmailConfirmRequest>({
 			query: (body) => ({
-				url: '/v2/auth/email-confirm',
+				url: API_ROUTES.AUTH.EMAIL_CONFIRM,
 				method: 'POST',
 				body,
 			})
 		}),
-		emailConfirmResend: builder.mutation<{ message: string }, { email: string }>({
+		emailConfirmResend: builder.mutation<DefaultResponse, { email: string }>({
 			query: (body) => ({
-				url: '/v2/auth/resend-code',
+				url: API_ROUTES.AUTH.EMAIL_CONFIRM_RESEND,
+				method: 'POST',
+				body
+			}),
+			transformResponse: (response: any, meta, body) => {
+				const token = meta?.response?.headers?.get('authorization');
+				if (token) setTokenToStorage(token);
+
+				return response
+			},
+		}),
+		googleOpen: builder.query<any, void>({
+			query: () => ({
+				url: API_ROUTES.AUTH.GOOGLE_OPEN,
+				method: 'GET'
+			})
+		}),
+		facebookOpen: builder.query<any, void>({
+			query: () => ({
+				url: API_ROUTES.AUTH.FACEBOOK_OPEN,
+				method: 'GET'
+			})
+		}),
+		googleAuth: builder.mutation<any, SocialRegisterBody>({
+			query: (body: SocialRegisterBody) => ({
+				url: API_ROUTES.AUTH.GOOGLE_AUTH,
 				method: 'POST',
 				body
 			})
-		})
+		}),
+		facebookAuth: builder.mutation<any, SocialRegisterBody>({
+			query: (body: SocialRegisterBody) => ({
+				url: API_ROUTES.AUTH.FACEBOOK_AUTH,
+				method: 'POST',
+				body
+			})
+		}),
+		walletConnect: builder.mutation({
+			query: (body) => ({
+				url: API_ROUTES.AUTH.WALLET_CONNECT,
+				method: 'POST',
+				body
+			})
+		}),
+		walletRegister: builder.mutation({
+			query: (body) => ({
+				url: API_ROUTES.AUTH.WALLET_REGISTER,
+				method: 'POST',
+				body
+			})
+		}),
 	})
 });
 
@@ -64,5 +124,12 @@ export const {
 	useRegisterMutation,
 	useGetUserQuery,
 	useEmailConfirmMutation,
-	useEmailConfirmResendMutation
+	useEmailConfirmResendMutation,
+	useLogoutMutation,
+	useGoogleOpenQuery,
+	useFacebookOpenQuery,
+	useGoogleAuthMutation,
+	useFacebookAuthMutation,
+	useWalletConnectMutation,
+	useWalletRegisterMutation
 } = authAPI;

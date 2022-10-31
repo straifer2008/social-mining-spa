@@ -6,13 +6,19 @@ import { Typography } from '@mui/material';
 import { selectAuthenticationState } from "store/auth";
 import ROUTES from "router/routes";
 import Logo from 'assets/images/Logo.svg';
-import { Card } from 'shared';
+import { Card, LoadingScreen } from 'shared';
 import './AuthLayout.scss';
+import { getTokenFromStorage } from 'utils';
+import { useGetUserQuery } from 'services';
 
 type AuthLayoutProps = {};
 export const AuthLayout: FC<AuthLayoutProps> = () => {
 	const location = useLocation();
+	const storedToken = getTokenFromStorage();
 	const isAuthenticated = useSelector(selectAuthenticationState);
+	const { isLoading } = useGetUserQuery(undefined, { skip: !storedToken });
+
+	if (isLoading) return <LoadingScreen />
 
 	if (isAuthenticated) {
 		return <Navigate to={ROUTES.ROOT} />;

@@ -1,24 +1,24 @@
 // created by Artem
 import { FC, SyntheticEvent } from 'react';
 import { Button, Grid, styled } from '@mui/material';
-import { USER_ROLES } from 'constants/common';
 import { useTranslation } from 'react-i18next';
+import { UserRoles } from 'types';
 
 type RoleSwitcherProps = {
 	onChange?: (...event: any[]) => void;
-	setRole?: (role: 'customer' | 'executor') => void;
-	value: 'customer' | 'executor';
+	setRole?: (role: UserRoles) => void;
+	value: UserRoles;
 };
 export const RoleSwitcher: FC<RoleSwitcherProps> = ({ onChange, setRole, value }) => {
 	const { t } = useTranslation();
 
 	const setCustomerHandle = (e: SyntheticEvent) => {
-		onChange && onChange({ ...e, target: { ...e.target, value: USER_ROLES.customer } });
-		setRole && setRole(USER_ROLES.customer)
+		onChange && onChange({ ...e, target: { ...e.target, value: UserRoles.customer } });
+		setRole && setRole(UserRoles.customer)
 	}
 	const setExecutorHandle = (e: SyntheticEvent) => {
-		onChange && onChange({ ...e, target: { ...e.target, value: USER_ROLES.executor } });
-		setRole && setRole(USER_ROLES.executor)
+		onChange && onChange({ ...e, target: { ...e.target, value: UserRoles.executor } });
+		setRole && setRole(UserRoles.executor)
 	}
 
 	return (
@@ -26,7 +26,7 @@ export const RoleSwitcher: FC<RoleSwitcherProps> = ({ onChange, setRole, value }
 			<Grid item xs={6}>
 				<Button
 					sx={{height: 50}}
-					variant={value === USER_ROLES.executor ? 'contained' : 'text'}
+					variant={value === UserRoles.executor ? 'contained' : 'text'}
 					onClick={setExecutorHandle}
 					fullWidth
 				>
@@ -36,7 +36,7 @@ export const RoleSwitcher: FC<RoleSwitcherProps> = ({ onChange, setRole, value }
 			<Grid item xs={6}>
 				<Button
 					sx={{height: 50}}
-					variant={value === USER_ROLES.customer ? 'contained' : 'text'}
+					variant={value === UserRoles.customer ? 'contained' : 'text'}
 					onClick={setCustomerHandle}
 					fullWidth
 				>

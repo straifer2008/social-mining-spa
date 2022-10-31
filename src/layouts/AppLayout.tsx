@@ -1,22 +1,30 @@
 // created by Artem
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectAuthenticationState } from "store/auth";
 import ROUTES from "router/routes";
 import { Sidebar, Header } from './components';
-import { useGetUserQuery } from 'services';
+import { useGetUserQuery, useLogoutMutation } from 'services';
+import { getTokenFromStorage } from 'utils';
+import { useServerError } from 'hooks';
+import { LoadingScreen } from 'shared';
+import { Button } from '@mui/material';
 
 type AppLayoutProps = {};
 export const AppLayout: FC<AppLayoutProps> = () => {
 	const isAuthenticated = useSelector(selectAuthenticationState);
-	const {data: user} = useGetUserQuery();
+	const storedToken = getTokenFromStorage();
+	const { isError, error, isLoading } = useGetUserQuery(undefined, { skip: !storedToken });
+	const [logout, { isLoading: logoutLoading }] = useLogoutMutation();
 
-	useEffect(() => {
-		console.log(user, '----user')
-	}, [user]);
+	useServerError({ isError, error });
 
-	if (!isAuthenticated) {
+	const logoutHandle = async() => await logout();
+
+	if (isLoading || logoutLoading) return <LoadingScreen />
+
+	if (!storedToken || (isError && !isAuthenticated)) {
 		return <Navigate to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.LOGIN}`} />
 	}
 
@@ -27,6 +35,8 @@ export const AppLayout: FC<AppLayoutProps> = () => {
 			</Header>
 
 			<Sidebar />
+
+			<Button onClick={logoutHandle}>Logout</Button>
 
 			<Outlet />
 		</div>

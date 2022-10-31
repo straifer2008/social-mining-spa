@@ -1,10 +1,11 @@
 import { configureStore, ThunkAction, Action, combineReducers } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { authAPI } from "../services";
+import { authAPI, locationApi } from 'services';
 import { authReducer } from './auth';
 
 const rootReducer = combineReducers({
 	[authAPI.reducerPath]: authAPI.reducer,
+	[locationApi.reducerPath]: locationApi.reducer,
 	auth: authReducer,
 });
 
@@ -12,6 +13,7 @@ export const store = configureStore({
   reducer: rootReducer,
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([
 		authAPI.middleware,
+		locationApi.middleware
 	])
 });
 

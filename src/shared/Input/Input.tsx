@@ -64,32 +64,36 @@ export const Input:React.FC<InputProps> = ({
 
 	if (type && onChange && (InputTypes.TEXT || InputTypes.PASSWORD)) {
 		return (
-			<TextField
-				autoComplete="new-password"
-				placeholder={placeholder}
-				onBlur={onBlur}
-				onChange={onChange}
-				value={value}
-				fullWidth
-				type={isShowPassword ? 'text' : type}
-				label={label}
-				error={!!error}
-				inputProps={{ autoComplete: 'new-password' }}
-				helperText={error?.message}
-				{...(type === InputTypes.PASSWORD && {
-					InputProps: {
-						autoComplete: 'new-password',
-						endAdornment: (
-							<InputAdornment position="end">
-								<IconButton onClick={togglePasswordVisibility} edge="end">
-									<Iconify icon={isShowPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-								</IconButton>
-							</InputAdornment>
-						),
-					},
-				})
-				}
-			/>
+			<>
+				{/* fake input for disabling autocomplete */}
+				<input type="password" name="fake-password" autoComplete="new-password" style={{ display: 'none' }} />
+				<TextField
+					autoComplete="new-password"
+					placeholder={placeholder}
+					onBlur={onBlur}
+					onChange={onChange}
+					value={value}
+					fullWidth
+					type={isShowPassword ? 'text' : type}
+					label={label}
+					error={!!error}
+					inputProps={{ autoComplete: 'new-password' }}
+					helperText={error?.message}
+					{...(type === InputTypes.PASSWORD && {
+						InputProps: {
+							autoComplete: 'new-password',
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton onClick={togglePasswordVisibility} edge="end">
+										<Iconify icon={isShowPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+									</IconButton>
+								</InputAdornment>
+							),
+						},
+					})
+					}
+				/>
+			</>
 		)
 	}
 

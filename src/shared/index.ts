@@ -7,3 +7,4 @@ export * from './Calendar';
 export * from './Notification';
 export * from './DatePicker';
 export * from './Dialog';
+export * from './LoadingScreen';
